@@ -1,0 +1,58 @@
+<div class="pc-features">
+  <div class="pc-features-container">
+    <div class="w-full">
+      <h2>
+        {{
+          ('what_makes_site_so_different' | translate).replace(
+            '[site_name]',
+            siteName
+          )
+        }}
+      </h2>
+    </div>
+    <div class="w-full">
+      <ul class="pc-features-list">
+        <li>
+          <app-icon [iconName]="'support_agent'"></app-icon>
+          <h4>{{ '24_7_support' | translate }}</h4>
+          <p>{{ '24_7_support_description' | translate }}</p>
+        </li>
+        <li>
+          <app-icon [iconName]="'payments'"></app-icon>
+          <h4>{{ 'scaled_price' | translate }}</h4>
+          <p>{{ 'scaled_price_description' | translate }}</p>
+        </li>
+        <li>
+          <app-icon [iconName]="'translate'"></app-icon>
+          <h4>{{ 'multi_language_support' | translate }}</h4>
+          <p>{{ 'multi_language_support_description' | translate }}</p>
+        </li>
+        <li>
+          <app-icon [iconName]="'schedule_send'"></app-icon>
+          <h4>{{ 'notifications' | translate }}</h4>
+          <p>{{ 'notifications_description' | translate }}</p>
+        </li>
+        <li>
+          <app-icon [iconName]="'history'"></app-icon>
+          <h4>{{ 'chat_history' | translate }}</h4>
+          <p>{{ 'chat_history_description' | translate }}</p>
+        </li>
+        <li>
+          <app-icon [iconName]="'location_on'"></app-icon>
+          <h4>{{ 'clients_location' | translate }}</h4>
+          <p>{{ 'clients_location_description' | translate }}</p>
+        </li>
+        <li>
+          <app-icon [iconName]="'crop_original'"></app-icon>
+          <h4>{{ 'attachments' | translate }}</h4>
+          <p>{{ 'attachments_description' | translate }}</p>
+        </li>
+        <li>
+          <app-icon [iconName]="'touch_app'"></app-icon>
+          <h4>{{ 'easy_to_use' | translate }}</h4>
+          <p>{{ 'easy_to_use_description' | translate }}</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

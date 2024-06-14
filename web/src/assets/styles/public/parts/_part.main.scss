@@ -1,0 +1,37 @@
+// MAIN PART
+
+.pc-main {
+  background-color: $color-green-dark;
+
+  .pc-plans,
+  .pc-faq {
+    min-height: 100vh;
+
+    @media (max-height: 850px) {
+      min-height: 850px;
+    }
+  }
+
+  .pc-top-bar-container,
+  .pc-presentation-container,
+  .pc-stats-container,
+  .pc-features-container,
+  .pc-plans-container,
+  .pc-faq-container,
+  .pc-footer-container,
+  .pc-terms {
+    width: 1200px;
+
+    @media (max-width: 1230px) {
+      padding-right: 15px !important;
+      padding-left: 15px !important;
+      width: 100%;
+    }
+  }
+
+  .pc-features-container,
+  .pc-plans-container,
+  .pc-faq-container {
+    padding: 14vh 0;
+  }
+}

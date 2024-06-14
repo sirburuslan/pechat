@@ -1,0 +1,38 @@
+<div class="pc-presentation">
+  <div class="pc-presentation-container">
+    <div class="pc-presentation-text">
+      <h1>
+        {{ 'start_now_to_offer' | translate }}
+        <span>{{ 'real_time' | translate }}</span
+        ><br />
+        {{ 'support_to_your_clients' | translate }}
+      </h1>
+      <h4>
+        {{ 'add_live_chat_to_your_website' | translate }}<br />
+        {{ 'and_use_with_no_restrictions' | translate }}
+      </h4>
+      <a routerLink="/auth/registration" class="pc-get-started">
+        {{ 'get_started' | translate }}
+      </a>
+      <a href="#" class="pc-book-call">
+        {{ 'book_a_call_now' | translate }}
+      </a>
+      <h6>
+        <span>
+          <app-icon [iconName]="'tour'"></app-icon>
+          {{ 'set_up_in_minutes' | translate }}
+        </span>
+        <span>
+          <app-icon [iconName]="'tour'"></app-icon>
+          {{ 'no_credit_card_required' | translate }}
+        </span>
+      </h6>
+    </div>
+    <div class="pc-presentation-image">
+      <img
+        src="https://fechat.midrub.com/_next/image?url=%2Fassets%2Fimg%2Fpresentation.png&w=640&q=75"
+        alt="Presentation"
+      />
+    </div>
+  </div>
+</div>

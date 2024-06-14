@@ -1,0 +1,351 @@
+// MAIN PART
+.pc-main {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 1;
+  overflow: auto;
+  padding-top: 80px;
+  background-color: $color-green-dark;
+
+  .pc-auth-container {
+    a.pc-auth-logo {
+      display: block;
+      position: relative;
+      width: 100%;
+      min-height: 48px;
+      text-align: center;
+
+      img {
+        display: inherit;
+        margin: auto;
+        width: auto !important;
+        height: auto !important;
+      }
+    }
+
+    .pc-auth-redirecting,
+    .pc-auth-validating {
+      margin-top: 30px;
+      border: 1px solid #f5f6f8;
+      border-radius: 12px;
+      background-color: #ffffff;
+      box-shadow: 0 16px 14px -15px rgba(0, 0, 0, 0.04);
+    }
+
+    .pc-auth-main-form {
+      margin-top: 30px;
+      border: 1px solid #f5f6f8;
+      border-radius: 12px;
+      background-color: #ffffff;
+      box-shadow: 0 16px 14px -15px rgba(0, 0, 0, 0.04);
+
+      h3 {
+        font-family: $font-6;
+        font-size: 21px;
+        font-weight: 500;
+        color: $color-black-dark;
+      }
+
+      .pc-auth-main-form-continue-google-link,
+      .pc-auth-main-form-continue-sso-link {
+        display: block;
+        margin: 0px 0px 16px;
+        box-sizing: border-box;
+        padding: 12px;
+        width: 100%;
+        height: 40px;
+        border: 1px solid $color-black-dark;
+        border-radius: 6px;
+        line-height: 14px;
+        text-align: center;
+        font-family: $font-6;
+        font-size: 13px;
+        font-weight: 600;
+        color: $color-black-dark;
+
+        &:hover {
+          border: 1px solid $color-black-light;
+          color: $color-black-light;
+        }
+      }
+
+      .pc-auth-main-form-continue-google-link {
+        img {
+          display: inline-block;
+          vertical-align: middle;
+          margin: -4px 7px 0 0;
+        }
+      }
+
+      .pc-auth-main-form-continue-sso-link {
+        & > svg {
+          display: inline-block;
+          margin: -4px 7px 0 0;
+          width: 18px;
+          height: 18px;
+          color: $color-black-dark;
+        }
+      }
+
+      .pc-auth-main-form-separator {
+        position: relative;
+        margin: 35px 0;
+        width: 100%;
+        height: 1px;
+        background-color: $color-grey;
+
+        &::before {
+          content: attr(data-text);
+          display: block;
+          position: absolute;
+          left: 50%;
+          margin-top: -8px;
+          margin-left: -15px;
+          width: 30px;
+          text-align: center;
+          font-family: $font-7;
+          font-size: 12px;
+          background-color: #ffffff;
+          color: $color-black-dark;
+        }
+      }
+
+      .pc-auth-main-form-input {
+        display: block;
+        margin: 0 0 16px;
+        box-sizing: border-box;
+        padding: 12px;
+        width: 100%;
+        height: 40px;
+        border: 1px solid rgb(234, 239, 245);
+        border-radius: 6px;
+        font-family: $font-7;
+        font-size: 14px;
+        background-color: rgb(255, 255, 255);
+        color: $color-black-dark;
+        transition:
+          border-color 0.1s ease 0s,
+          background-color 0.1s ease 0s,
+          box-shadow 0.2s ease 0s;
+        appearance: none;
+
+        &#pc-auth-main-form-password {
+          margin: 0;
+        }
+
+        &:valid,
+        &:-webkit-autofill,
+        &:-webkit-autofill:hover,
+        &:-webkit-autofill:focus,
+        &:-webkit-autofill:active {
+          box-shadow: 0 0 0 30px white inset !important;
+        }
+      }
+
+      label {
+        font-family: $font-7;
+        font-size: 13px;
+        background-color: #ffffff;
+        color: $color-black-light;
+      }
+
+      .pc-auth-main-form-input:focus + label {
+        margin-top: -2px;
+        font-size: 16px;
+      }
+
+      .pc-auth-main-form-show-password-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        margin: 0;
+        padding: 0;
+        width: auto;
+        height: auto;
+        border: 0;
+        background-color: transparent;
+
+        & > app-icon {
+          color: $color-black-light;
+          pointer-events: none;
+
+          .pc-auth-main-form-eye-hide-icon,
+          .pc-auth-main-form-eye-icon {
+            font-size: 18px;
+          }
+
+          .pc-auth-main-form-eye-hide-icon {
+            display: block;
+          }
+
+          .pc-auth-main-form-eye-icon {
+            display: none;
+          }
+        }
+      }
+
+      #pc-auth-main-form-password[type='text']
+        + label
+        + .pc-auth-main-form-show-password-btn {
+        & > app-icon {
+          .pc-auth-main-form-eye-hide-icon {
+            display: none;
+          }
+
+          .pc-auth-main-form-eye-icon {
+            display: block;
+          }
+        }
+      }
+
+      .pc-auth-main-form-input-error-message {
+        position: absolute;
+        top: 34px;
+        padding: 0 12px;
+        width: 100%;
+        height: 24px;
+        border-radius: 0 0 6px 6px;
+        line-height: 25px;
+        font-family: $font-6;
+        font-size: 12px;
+        background-color: $color-red-light;
+        color: $color-red-dark;
+        transform: scaleY(0);
+        transition: transform 0.3s linear;
+        transform-origin: top;
+
+        &.pc-auth-main-form-input-error-message-show {
+          transform: scaleY(1);
+        }
+      }
+
+      .pc-auth-main-form-reset-link {
+        border-bottom: 1px solid $color-black-dark;
+        font-family: $font-7;
+        font-size: 12px;
+        font-weight: 400;
+        color: $color-black-dark;
+
+        &:hover {
+          border-bottom: 1px solid transparent;
+        }
+      }
+
+      .pc-auth-main-form-submit-btn {
+        align-items: center;
+        justify-content: center;
+        padding: 0 15px;
+        width: 100%;
+        height: 35px;
+        border-radius: 6px;
+        line-height: 24px;
+        font-family: $font-7;
+        font-size: 14px;
+        font-weight: 400;
+        background-color: $color-blue-dark-extra;
+        color: #ffffff;
+        box-shadow:
+          0 3px 2px -2px rgba(0, 0, 0, 0.12),
+          0 4px 6px rgba(0, 0, 0, 0.04);
+
+        &:hover {
+          background-color: rgba($color: $color-blue-dark-extra, $alpha: 0.7);
+        }
+
+        & > svg {
+          display: inline-block;
+          margin: -2px 0 0 10px;
+          width: 20px;
+          height: 19px;
+          color: #ffffff;
+          pointer-events: none;
+
+          &.pc-auth-main-form-submitting-icon {
+            display: none;
+          }
+        }
+
+        &.pc-auth-main-form-submit-active-btn {
+          & > svg {
+            &.pc-auth-main-form-submit-icon {
+              display: none;
+            }
+
+            &.pc-auth-main-form-submitting-icon {
+              display: inline-block;
+            }
+          }
+        }
+      }
+
+      .pc-auth-main-form-alerts {
+        .pc-auth-main-form-alert-success,
+        .pc-auth-main-form-alert-error {
+          line-height: 24px;
+          font-family: $font-7;
+          font-size: 14px;
+          font-weight: 400;
+          transform-origin: top;
+          animation: pc-top-to-bottom-animation 0.3s linear forwards;
+
+          .pc-auth-main-form-alert-success-icon,
+          .pc-auth-main-form-alert-error-icon {
+            vertical-align: middle;
+            margin: -5px 5px 0 0;
+            width: 24px;
+          }
+        }
+
+        .pc-auth-main-form-alert-success {
+          background-color: $color-blue-light;
+          color: $color-blue-dark;
+
+          .pc-auth-main-form-alert-success-icon {
+            color: $color-blue-dark;
+          }
+        }
+
+        .pc-auth-main-form-alert-error {
+          background-color: $color-red-light;
+          color: $color-red-dark;
+
+          .pc-auth-main-form-alert-error-icon {
+            color: $color-red-dark;
+          }
+        }
+
+        .pc-auth-main-form-alert-error-static {
+          animation: none;
+        }
+      }
+
+      .pc-auth-additional-link {
+        margin-top: 30px;
+        padding-top: 10px;
+
+        p {
+          width: 100%;
+          text-align: center;
+          font-family: $font-7;
+          font-size: 13px;
+          font-weight: 600;
+          color: $color-black-light;
+
+          a {
+            margin-left: 5px;
+            border-bottom: 1px solid $color-black-light;
+            font-weight: 600;
+            color: $color-black-light;
+
+            &:hover {
+              border-bottom: 1px solid transparent;
+            }
+          }
+        }
+      }
+    }
+  }
+}

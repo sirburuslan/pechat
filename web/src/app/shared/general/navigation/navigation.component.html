@@ -1,0 +1,42 @@
+<div class="pc-navigation flex justify-between items-center justify-center pl-3 pr-3 pc-transparent-color" *ngIf="total > 0">
+  <h3>
+    {{ (((page - 1) * limit) + 1) + '-' + (((page * limit) < total)?(page * limit):total) }} {{ 'of' | translate }} {{ total}} {{ 'results' | translate }}
+  </h3>
+  <ul class="flex" [attr.data-scope]="scope">
+    <li class="page-item" *ngIf="page > 1; else noPrevious">
+      <a href="#" class="page-link" [attr.data-page]="page - 1" (click)="onPageClick($event, (page - 1))">
+        <app-icon
+          [iconName]="'navigate_before'"
+        ></app-icon>
+      </a>
+    </li>
+    <li class="page-item" *ngFor="let p of pages">
+        <a href="#" class="page-link" [ngClass]="{'active': p.active}" (click)="onPageClick($event, p.page)">
+          {{ p.page }}
+        </a>
+    </li>
+    <li class="page-item" *ngIf="(limit * page) < total; else noNext">
+        <a href="#" class="page-link" [attr.data-page]="page + 1" (click)="onPageClick($event, (page + 1))">
+          <app-icon
+            [iconName]="'navigate_next'"
+          ></app-icon>
+        </a>
+    </li>
+  </ul>
+</div>
+
+<ng-template #noPrevious>
+  <li class="page-item disabled">
+    <a href="#" class="page-link">
+      <app-icon [iconName]="'navigate_before'"></app-icon>
+    </a>
+  </li>
+</ng-template>
+
+<ng-template #noNext>
+  <li class="page-item disabled">
+    <a href="#" class="page-link">
+      <app-icon [iconName]="'navigate_next'"></app-icon>
+    </a>
+  </li>
+</ng-template>

@@ -1,0 +1,10 @@
+// TABS COMPONENT
+.pc-tabs {
+  .pc-tab {
+    display: none;
+
+    &.pc-show-tab {
+      display: block;
+    }
+  }
+}

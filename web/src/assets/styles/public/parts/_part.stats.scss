@@ -1,0 +1,77 @@
+// STATS PART
+.pc-stats {
+  .pc-stats-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
+    padding: 10px 0;
+    height: auto;
+
+    .pc-stat {
+      padding: 10px 0;
+      width: 25%;
+      height: 100px;
+      border: 1px solid #b4c6b8;
+      border-right: 0;
+      text-align: center;
+
+      &:first-child {
+        border: 0;
+      }
+
+      &:last-child {
+        border-right: 1px solid #b4c6b8;
+      }
+
+      @media (max-width: 800px) {
+        width: 100%;
+        border-right: 1px solid #b4c6b8;
+        border-bottom: 0;
+
+        &:first-child {
+          border: 0;
+
+          a {
+            display: block;
+            float: none;
+          }
+        }
+
+        &:last-child {
+          border-bottom: 1px solid #b4c6b8;
+        }
+      }
+
+      a {
+        margin-top: 27px;
+        float: left;
+        font-family: $font-8;
+        font-size: 16px;
+        font-weight: 600;
+        color: #ffffff;
+
+        .material-icons-outlined {
+          display: inline-block;
+          vertical-align: middle;
+          margin: -7px 15px 0 0;
+          font-size: 37px;
+        }
+      }
+
+      h3 {
+        margin-bottom: 10px;
+        font-family: $font-8;
+        font-size: 24px;
+        font-weight: 400;
+        color: #ffffff;
+      }
+
+      h6 {
+        font-family: $font-2;
+        font-size: 16px;
+        font-weight: 400;
+        color: #ffffff;
+      }
+    }
+  }
+}

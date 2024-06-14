@@ -1,0 +1,111 @@
+// DROPDOWN COMPONENT UI
+.pc-dropdown {
+  position: relative;
+
+  .pc-button {
+    & > * {
+      pointer-events: none;
+    }
+
+    .pc-dropdown-arrow-down-icon {
+      vertical-align: middle;
+      margin-top: -3px;
+      margin-right: 3px;
+      font-size: 18px;
+      transition: all 0.3s ease;
+    }
+  }
+
+  &[data-expand='true'] {
+    .pc-button {
+      .pc-dropdown-arrow-down-icon {
+        transform: rotate(-180deg);
+      }
+    }
+  }
+
+  .pc-dropdown-menu {
+    display: none;
+    width: 225px;
+    border-radius: 6px;
+    background-color: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 10px 21px;
+    transform: translate3d(0, 0, 0);
+
+    input[type='text'] {
+      padding: 8px 15px;
+      width: 100%;
+      border-bottom: 1px solid $color-violet-light;
+      border-radius: 6px 6px 0 0;
+    }
+
+    ul {
+      li {
+        &:first-child {
+          a {
+            border-radius: 6px 6px 0 0;
+          }
+        }
+
+        &:last-child {
+          a {
+            border-radius: 0 0 6px 6px;
+          }
+        }
+
+        &.pc-no-results-found-message {
+          padding: 10px 15px;
+          font-family: $font-2;
+          font-size: 14px;
+        }
+
+        a {
+          display: block;
+          padding: 10px 15px;
+          font-family: $font-2;
+          font-size: 14px;
+          background-color: transparent;
+          transition: all 0.3s ease-in-out;
+
+          &:hover,
+          &.pc-active {
+            background-color: $color-grey-light;
+          }
+        }
+      }
+    }
+  }
+
+  &[data-expand='true'] {
+    .pc-dropdown-menu {
+      display: block;
+      position: absolute;
+      z-index: 1;
+      transform: scaleY(0.7);
+      transform-origin: bottom;
+      opacity: 0;
+      animation: pc-show-dropdown 0.2s linear forwards;
+      transition: none;
+
+      &.pc-dropdown-menu-right {
+        right: 0px;
+      }
+    }
+  }
+}
+
+@keyframes pc-show-dropdown {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    transform: scaleY(0.7);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}

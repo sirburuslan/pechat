@@ -1,0 +1,245 @@
+
+<div class="pc-users-container">
+  <div class="flex mb-3">
+      <div class="w-full">
+          <h2 class="pc-page-title">
+              {{ 'users' | translate }}
+          </h2>
+      </div>
+  </div>
+  <div class="flex mb-3">
+      <div class="w-full flex">
+          <div class="flex pc-search-box pc-transparent-color" [ngClass]="{'pc-search-active': users.searchClass === 'active', 'pc-search-complete': users.searchClass === 'complete'}">
+              <span class="pc-search-icon">
+                  <app-icon [iconName]="'search'"></app-icon>
+              </span>
+              <input type="text" placeholder="{{ 'search_for_users' | translate }}" [formControl]="searchControl" class="form-control pc-search-input" id="pc-search-for-users" />
+              <a href="#" (click)="onCancelSearch($event)">
+                  <app-icon
+                    [iconName]="'autorenew'"
+                    [extraClass]="'pc-load-more-icon'"
+                  ></app-icon>
+                  <app-icon
+                    [iconName]="'cancel'"
+                    [extraClass]="'pc-cancel-icon'"
+                  ></app-icon>
+              </a>
+          </div>
+          <button class="ec-search-btn pc-new-user-button" (click)="showModal(newUser)">
+              <app-icon [iconName]="'person_add_alt'"></app-icon>
+              {{ 'new_user' | translate }}
+          </button>
+          <button class="ec-search-btn pc-export-users-button">
+              <app-icon [iconName]="'cloud_download'"></app-icon>
+              {{ 'export' | translate }}
+          </button>
+      </div>
+  </div>
+  <div class="flex mb-3">
+      <div class="w-full grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 pc-users-list" *ngIf="usersList && usersList.length > 0; else noResults">
+        <div class="pc-user" *ngFor="let user of usersList" >
+          <div class="pc-dashboard-sidebar-body flex justify-between">
+            <div class="flex">
+              <div class="grid grid-cols-1 content-around pc-user-photo">
+                <!--{(user.profilePhoto as string)?(
+                <Image src={user.profilePhoto} width={40} height={40} alt="User Photo" onError={(e:
+                  SyntheticEvent<HTMLImageElement, Event>): void => {e.currentTarget.src = '/assets/img/cover.png'}} />
+                  ): (
+                  <div class="pc-profile-photo-cover">
+                    {getIcon('IconPerson')}
+                  </div>
+                  )}-->
+                  <div class="pc-profile-photo-cover">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                    </svg>
+                  </div>
+              </div>
+              <div class="grid grid-cols-1 content-around pc-user-info">
+                <h3>
+                  <a href="#">
+                    {{ (user.first_name && user.last_name)?user.first_name + ' ' + user.last_name:user.email }}
+                  </a>
+                </h3>
+                <p>
+                  <!--{(parseInt(user.role) === 0)?(getWord('default', 'default_administrator',
+                  userOptions['Language'])):(getWord('default', 'default_user', userOptions['Language']))}-->
+                </p>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 content-around">
+              <app-dropdown
+              [buttonText]="dropdownButton"
+              [dropdownItems]="
+                [
+                  {
+                    type: 'link',
+                    text: 'edit' | translate,
+                    url: '/admin/users/' + user.id
+                  },
+                  {
+                    type: 'callback',
+                    text: 'delete' | translate,
+                    callback: user.id
+                  }
+                ]
+              "
+              (callbackValue)="deleteConfirmation($event)"></app-dropdown>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 content-around pc-user-footer">
+            <div class="flex justify-between">
+              <div>
+                <app-icon
+                  [iconName]="'person_add_alt'"
+                  [extraClass]="'pc-user-last-access-icon'"
+                ></app-icon>
+                <span>
+                  {{ formatDate(user.date_joined) }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  <app-navigation [scope]="'users'" [total]="users.total" [page]="users.page" [limit]="24" (navigate)="navigateTo($event)"></app-navigation>
+</div>
+<ng-template #newUser>
+  <div class="pc-modal-header flex justify-between">
+    <h3>
+      {{ 'new_user' | translate }}
+    </h3>
+    <button type="button" class="pc-modal-hide-modal" (click)="onCloseModal()">
+      <app-icon [iconName]="'close'"></app-icon>
+    </button>
+  </div>
+  <div class="pc-modal-body">
+    <form [formGroup]="newUserForm" id="pc-create-user-form" (submit)="onSubmit($event)">
+      <div class="col-span-full pc-modal-text-input">
+        <input type="text"
+          [placeholder]="'enter_first_name' | translate"
+          name="pc-modal-text-input-first-name"
+          formControlName="firstName"
+          id="pc-modal-text-input-first-name"
+          class="block px-2.5 pb-2.5 pt-4 w-full pc-modal-form-input"
+        />
+        <label for="pc-modal-text-input-first-name" class="absolute">
+          <app-icon [iconName]="'person'"></app-icon>
+        </label>
+        <div class="pc-modal-form-input-error-message"
+          [ngClass]="{
+            'pc-modal-form-input-error-message-show': errors.firstName
+            }">
+            {{ errors.firstName }}
+        </div>
+      </div>
+      <div class="col-span-full pc-modal-text-input">
+        <input type="text"
+          [placeholder]="'enter_last_name' | translate"
+          name="pc-modal-text-input-last-name"
+          formControlName="lastName"
+          id="pc-modal-text-input-last-name"
+          class="block px-2.5 pb-2.5 pt-4 w-full pc-modal-form-input"
+        />
+        <label for="pc-modal-text-input-last-name" class="absolute">
+          <app-icon [iconName]="'person'"></app-icon>
+        </label>
+        <div class="pc-modal-form-input-error-message"
+          [ngClass]="{
+            'pc-modal-form-input-error-message-show': errors.lastName
+            }">
+            {{ errors.lastName }}
+        </div>
+      </div>
+      <div class="col-span-full pc-modal-text-input">
+        <input type="email"
+          [placeholder]="'enter_email_address' | translate"
+          name="pc-modal-text-input-email"
+          formControlName="email"
+          id="pc-modal-text-input-email"
+          class="block px-2.5 pb-2.5 pt-4 w-full pc-modal-form-input"
+          autoComplete="email"
+        />
+        <label for="pc-modal-text-input-email" class="absolute">
+          <app-icon [iconName]="'alternate_email'"></app-icon>
+        </label>
+        <div class="pc-modal-form-input-error-message"
+          [ngClass]="{
+            'pc-modal-form-input-error-message-show': errors.email
+            }">
+            {{ errors.email }}
+        </div>
+      </div>
+      <div class="col-span-full pc-modal-text-input">
+        <input type="password"
+          [placeholder]="'enter_password' | translate"
+          name="pc-modal-text-input-password"
+          formControlName="password"
+          id="pc-modal-text-input-password"
+          class="block px-2.5 pb-2.5 pt-4 w-full pc-modal-form-input"
+          autoComplete="current-password"
+        />
+        <label for="pc-modal-text-input-password" class="absolute">
+          <app-icon [iconName]="'vpn_key'"></app-icon>
+        </label>
+        <div class="pc-modal-form-input-error-message"
+          [ngClass]="{
+            'pc-modal-form-input-error-message-show': errors.password
+            }">
+            {{ errors.password }}
+        </div>
+      </div>
+      <div class="col-span-full pc-modal-button">
+        <div class="text-right">
+          <button type="submit" class="mb-3 flex justify-between pc-submit-button">
+            {{ 'save_user' | translate }}
+            <app-icon
+              [iconName]="'autorenew'"
+              [extraClass]="'pc-load-more-icon'"
+            ></app-icon>
+            <app-icon
+              [iconName]="'arrow_forward'"
+              [extraClass]="'pc-next-icon'"
+            ></app-icon>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+<ng-template #deleteUser>
+  <div class="pc-modal-header flex justify-between">
+    <h3>
+      {{ 'are_you_sure' | translate }}
+    </h3>
+    <button type="button" class="pc-modal-hide-modal" (click)="onCloseModal()">
+      <app-icon [iconName]="'close'"></app-icon>
+    </button>
+  </div>
+  <div class="pc-modal-body">
+    <div class="col-span-full">
+        <p class="pc-modal-text">
+          {{ 'deleting_user_permanent' | translate }}
+        </p>
+    </div>
+    <div class="col-span-full pc-modal-button">
+        <div class="text-right">
+            <button type="button" class="mb-3 flex justify-between pc-option-red-btn pc-confirmation-button" (click)="deleteUserConfirmation()">
+                <app-icon
+                  [iconName]="'file_download_done'"
+                  [extraClass]="'pc-next-icon'"
+                ></app-icon>
+                {{ 'confirm' | translate }}
+            </button>
+        </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #noResults>
+  <div class="w-full pc-users-list">
+    <div class="pc-no-users-found">
+      <p>{{ 'no_results_found' | translate }}</p>
+    </div>
+  </div>
+</ng-template>

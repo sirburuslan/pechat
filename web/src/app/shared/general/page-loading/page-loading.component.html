@@ -1,0 +1,16 @@
+<div
+  class="pc-page-loading"
+  [ngClass]="{ 'pc-page-loading-hide': hideLoading }"
+>
+  <div class="pc-loading-container">
+    <div class="pc-loading-circle">
+      <div class="pc-loading-circle-box pc-loading-circle-box-complete">
+        <div class="pc-loading-circle-fill"></div>
+      </div>
+      <div class="pc-loading-circle-box">
+        <div class="pc-loading-circle-fill"></div>
+      </div>
+      <div class="pc-loading-text">{{ loadingText }}</div>
+    </div>
+  </div>
+</div>

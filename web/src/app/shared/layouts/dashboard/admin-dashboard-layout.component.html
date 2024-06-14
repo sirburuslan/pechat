@@ -1,0 +1,69 @@
+<div class="pc-dashboard-sidebar" [class.pc-minimized-sidebar]="sidebarStatus">
+  <div class="pc-dashboard-sidebar-header">
+    <h4>
+      <a href="{{ siteUrl }}">
+        <app-icon [iconName]="'duo'" [extraClass]="'pc-sidebar-logo-icon'"></app-icon>
+        <span class="pc-sidebar-logo-text">
+          {{ siteName }}
+        </span>
+      </a>
+    </h4>
+  </div>
+  <div class="pc-dashboard-sidebar-body">
+    <ul>
+      <li>
+        <a routerLink="/admin/dashboard" routerLinkActive="pc-sidebar-item-active">
+          <app-icon [extraClass]="'pc-dashboard-sidebar-icon'" [iconName]="'speed'"></app-icon>
+          <span class="pc-dashboard-sidebar-menu-item">
+            {{ 'dashboard' | translate }}
+          </span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/admin/users" routerLinkActive="pc-sidebar-item-active">
+          <app-icon [extraClass]="'pc-dashboard-sidebar-icon'" [iconName]="'diversity_3'"></app-icon>
+          <span class="pc-dashboard-sidebar-menu-item">
+            {{ 'users' | translate }}
+          </span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/admin/plans" routerLinkActive="pc-sidebar-item-active">
+          <app-icon [extraClass]="'pc-dashboard-sidebar-icon'" [iconName]="'follow_the_signs'"></app-icon>
+          <span class="pc-dashboard-sidebar-menu-item">
+            {{ 'plans' | translate }}
+          </span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/admin/transactions" routerLinkActive="pc-sidebar-item-active">
+          <app-icon [extraClass]="'pc-dashboard-sidebar-icon'" [iconName]="'account_balance_wallet'"></app-icon>
+          <span class="pc-dashboard-sidebar-menu-item">
+            {{ 'transactions' | translate }}
+          </span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="pc-dashboard-sidebar-bottom">
+    <app-dropdown [buttonText]="dropdownButton" [dropdownItems]="[
+      {
+        type: 'link',
+        text: translateText('settings'),
+        url: '/admin/settings',
+      },
+      {
+        type: 'link',
+        text: translateText('sign_out'),
+        url: '/auth/logout',
+      },
+    ]"></app-dropdown>
+    <button type="button" class="pc-user-menu-maximize-minimize-button" (click)="showHideSidebar()">
+      <app-icon [iconName]="'keyboard_arrow_right'" [extraClass]="'pc-user-menu-maximize-icon'"></app-icon>
+      <app-icon [iconName]="'keyboard_arrow_left'" [extraClass]="'pc-user-menu-minimize-icon'"></app-icon>
+    </button>
+  </div>
+</div>
+<div class="pc-dashboard-content">
+  <router-outlet></router-outlet>
+</div>

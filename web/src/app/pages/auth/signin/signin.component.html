@@ -1,0 +1,128 @@
+<app-auth-layout>
+  <form
+    class="px-8 pt-6 pb-6 mb-4 pc-auth-main-form"
+    [formGroup]="userForm"
+    (ngSubmit)="onSubmit($event)"
+  >
+    <div class="mt-4 mb-14">
+      <h3 class="text-center">
+        <span>{{ 'sign_in_to' | translate }}</span>
+        {{ siteName }}
+      </h3>
+    </div>
+    <div class="mb-6 relative">
+      <input
+        name="pc-auth-main-form-email"
+        type="email"
+        placeholder=" "
+        autoComplete="current-email"
+        formControlName="email"
+        id="pc-auth-main-form-email"
+        class="block px-2.5 pb-2.5 pt-4 peer pc-auth-main-form-input"
+      />
+      <label
+        for="pc-auth-main-form-email"
+        class="absolute duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+      >
+        {{ 'enter_your_email_address' | translate }}
+      </label>
+      <div
+        class="pc-auth-main-form-input-error-message"
+        [ngClass]="{
+          'pc-auth-main-form-input-error-message-show': errorEmailMessage
+        }"
+      >
+        {{ errorEmailMessage }}
+      </div>
+    </div>
+    <div class="mb-4 relative">
+      <input
+        name="pc-auth-main-form-password"
+        [type]="passwordType"
+        placeholder=" "
+        autoComplete="current-password"
+        formControlName="password"
+        id="pc-auth-main-form-password"
+        class="block px-2.5 pb-2.5 pt-4 peer pc-auth-main-form-input"
+      />
+      <label
+        for="pc-auth-main-form-password"
+        class="absolute duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+      >
+        {{ 'enter_your_password' | translate }}
+      </label>
+      <button
+        type="button"
+        class="pc-auth-main-form-show-password-btn"
+        (click)="togglePasswordVisibility()"
+      >
+        <app-icon
+          [iconName]="'visibility'"
+          [extraClass]="'pc-auth-main-form-eye-icon'"
+        ></app-icon>
+        <app-icon
+          [iconName]="'visibility_off'"
+          [extraClass]="'pc-auth-main-form-eye-hide-icon'"
+        ></app-icon>
+      </button>
+      <div
+        class="pc-auth-main-form-input-error-message"
+        [ngClass]="{
+          'pc-auth-main-form-input-error-message-show': errorPasswordMessage
+        }"
+      >
+        {{ errorPasswordMessage }}
+      </div>
+    </div>
+    <div class="mb-6">
+      <a
+        routerLink="/auth/reset"
+        class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 pc-auth-main-form-reset-link"
+      >
+        {{ 'forgot_password' | translate }}
+      </a>
+    </div>
+    <div class="mt-4 mb-3">
+      <button
+        type="submit"
+        class="py-2 px-4 focus:outline-none focus:shadow-outline pc-auth-main-form-submit-btn"
+      >
+        {{ 'sign_in' | translate }}
+      </button>
+    </div>
+    <div class="pc-auth-main-form-alerts">
+      <div
+        class="flex items-center px-4 py-3 mb-4 pc-auth-main-form-alert-success"
+        role="alert"
+        *ngIf="successMessage"
+      >
+        <app-icon
+          [iconName]="'notifications'"
+          [extraClass]="'pc-auth-main-form-alert-success-icon'"
+        ></app-icon>
+        <p>{{ successMessage }}</p>
+      </div>
+      <div
+        class="flex items-center px-4 py-3 pc-auth-main-form-alert-error"
+        role="alert"
+        *ngIf="errorMessage"
+      >
+        <app-icon
+          [iconName]="'notifications'"
+          [extraClass]="'pc-auth-main-form-alert-error-icon'"
+        ></app-icon>
+        <p>{{ errorMessage }}</p>
+      </div>
+    </div>
+    <div class="pc-auth-additional-link">
+      <p>
+        <span>{{ 'dont_have_account' | translate }}</span>
+        <a
+          routerLink="/auth/registration"
+          class="inline-block pc-auth-main-form-reset-link"
+          >{{ 'register_an_account' | translate }}</a
+        >
+      </p>
+    </div>
+  </form>
+</app-auth-layout>

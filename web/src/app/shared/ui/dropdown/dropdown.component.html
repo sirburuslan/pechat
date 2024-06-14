@@ -1,0 +1,22 @@
+<div class="pc-dropdown" [attr.data-expand]="dropdownStatus">
+  <a href="#" class="pc-button flex justify-between" (click)="toggleDropdown(($event))">
+      <div [innerHtml]="buttonText"></div>
+      <app-icon [iconName]="'expand_more'" [extraClass]="'pc-dropdown-arrow-down-icon'"></app-icon>
+  </a>
+  <div class="pc-dropdown-menu">
+      <ul *ngIf="dropdownItems && dropdownItems.length > 0; else noResults">
+        <li *ngFor="let item of dropdownItems">
+          <a [routerLink]="item?.url?item.url:'#'" routerLinkActive="pc-active" *ngIf="item.type==='link'">
+            {{ item.text }}
+          </a>
+          <a href="'#'" routerLinkActive="pc-active" *ngIf="item.type==='callback'" (click)="callback($event, item?.callback)">
+            {{ item.text }}
+          </a>
+        </li>
+      </ul>
+  </div>
+</div>
+
+<ng-template #noResults>
+  <p>{{ 'no_results_found' | translate }}</p>
+</ng-template>

@@ -1,0 +1,4 @@
+2024-05-22 10:47:23.079 | ERROR    | member.views:put:75 - lets test
+NoneType: None
+2024-05-22 10:48:10.778 | ERROR    | member.views:put:75 - lets test
+NoneType: None

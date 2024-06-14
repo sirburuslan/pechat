@@ -1,0 +1,123 @@
+<div class="pc-faq">
+  <div class="pc-faq-container">
+    <div class="w-full">
+      <h2>{{ 'questions_answers' | translate }}</h2>
+    </div>
+    <div class="w-full">
+      <ul>
+        <li>
+          <a
+            href="#"
+            aria-expanded="false"
+            #how_to_create_chat
+            (click)="showHideAnswer($event, how_to_create_chat)"
+          >
+            <span>
+              {{ 'how_to_create_chat' | translate }}
+            </span>
+            <app-icon [iconName]="'expand_more'"></app-icon>
+          </a>
+          <div class="pc-faq-answer">
+            <p>{{ 'how_to_create_chat_answer' | translate }}</p>
+          </div>
+        </li>
+        <li>
+          <a
+            href="#"
+            aria-expanded="false"
+            #create_chats
+            (click)="showHideAnswer($event, create_chats)"
+          >
+            <span>
+              {{ 'create_chats' | translate }}
+            </span>
+            <app-icon [iconName]="'expand_more'"></app-icon>
+          </a>
+          <div class="pc-faq-answer">
+            <p>{{ 'create_chats_answer' | translate }}</p>
+          </div>
+        </li>
+        <li>
+          <a
+            href="#"
+            aria-expanded="false"
+            #receive_notifications
+            (click)="showHideAnswer($event, receive_notifications)"
+          >
+            <span>
+              {{ 'receive_notifications' | translate }}
+            </span>
+            <app-icon [iconName]="'expand_more'"></app-icon>
+          </a>
+          <div class="pc-faq-answer">
+            <p>{{ 'receive_notifications_answer' | translate }}</p>
+          </div>
+        </li>
+        <li>
+          <a
+            href="#"
+            aria-expanded="false"
+            #add_my_team
+            (click)="showHideAnswer($event, add_my_team)"
+          >
+            <span>
+              {{ 'add_my_team' | translate }}
+            </span>
+            <app-icon [iconName]="'expand_more'"></app-icon>
+          </a>
+          <div class="pc-faq-answer">
+            <p>{{ 'add_my_team_answer' | translate }}</p>
+          </div>
+        </li>
+        <li>
+          <a
+            href="#"
+            aria-expanded="false"
+            #delete_my_account
+            (click)="showHideAnswer($event, delete_my_account)"
+          >
+            <span>
+              {{ 'delete_my_account' | translate }}
+            </span>
+            <app-icon [iconName]="'expand_more'"></app-icon>
+          </a>
+          <div class="pc-faq-answer">
+            <p>{{ 'delete_my_account_answer' | translate }}</p>
+          </div>
+        </li>
+        <li>
+          <a
+            href="#"
+            aria-expanded="false"
+            #get_support
+            (click)="showHideAnswer($event, get_support)"
+          >
+            <span>
+              {{ 'get_support' | translate }}
+            </span>
+            <app-icon [iconName]="'expand_more'"></app-icon>
+          </a>
+          <div class="pc-faq-answer">
+            <p>{{ 'get_support_answer' | translate }}</p>
+          </div>
+        </li>
+        <li>
+          <a
+            href="#"
+            aria-expanded="false"
+            #do_you_offer_refunds
+            (click)="showHideAnswer($event, do_you_offer_refunds)"
+          >
+            <span>
+              {{ 'do_you_offer_refunds' | translate }}
+            </span>
+            <app-icon [iconName]="'expand_more'"></app-icon>
+          </a>
+          <div class="pc-faq-answer">
+            <p>{{ 'do_you_offer_refunds_answer' | translate }}</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

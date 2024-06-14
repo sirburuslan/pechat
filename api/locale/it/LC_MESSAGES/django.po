@@ -1,0 +1,101 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-06-02 16:39+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: .\administrator\serializers\members_serializer.py:45
+#: .\authentication\serializers\registration_serializer.py:48
+msgid "This email address is already registered."
+msgstr ""
+
+#: .\administrator\serializers\members_serializer.py:48
+#: .\authentication\serializers\registration_serializer.py:51
+msgid "Email address cannot be blank."
+msgstr ""
+
+#: .\administrator\serializers\members_serializer.py:52
+#: .\authentication\serializers\registration_serializer.py:55
+msgid "Enter a valid email address."
+msgstr ""
+
+#: .\administrator\serializers\members_serializer.py:62
+#: .\authentication\serializers\registration_serializer.py:65
+msgid "The password must be between 8 and 20 characters long."
+msgstr ""
+
+#: .\administrator\serializers\members_serializer.py:65
+#: .\authentication\serializers\registration_serializer.py:68
+msgid "The password cannot contain spaces."
+msgstr ""
+
+#: .\administrator\views\members_view.py:45
+#: .\authentication\views\registration_view.py:57
+#: .\authentication\views\signin_view.py:63
+msgid "An error has occurred."
+msgstr ""
+
+#: .\administrator\views\members_view.py:84
+msgid "The member was created successfully."
+msgstr ""
+
+#: .\authentication\models.py:18
+msgid "The Email field must be set"
+msgstr ""
+
+#: .\authentication\models.py:37
+msgid "email address"
+msgstr ""
+
+#: .\authentication\models.py:42
+msgid "role"
+msgstr ""
+
+#: .\authentication\models.py:47
+msgid "sidebar"
+msgstr ""
+
+#: .\authentication\views\registration_view.py:91
+msgid "The account was created successfully."
+msgstr ""
+
+#: .\authentication\views\signin_view.py:101
+msgid "sei entrato."
+msgstr ""
+
+#: .\authentication\views\signin_view.py:120
+msgid "The email or password is not correct."
+msgstr ""
+
+#: .\member\views.py:53
+msgid "An unknown error has occurred."
+msgstr ""
+
+#: .\member\views.py:84
+msgid "Changes have been saved successfully."
+msgstr ""
+
+#: .\member\views.py:92 .\member\views.py:98 .\member\views.py:156
+msgid "Member was not found."
+msgstr ""
+
+#: .\shared_utils\decorators.py:26 .\shared_utils\decorators.py:56
+msgid "Method Not Allowed (Requires POST)"
+msgstr ""
+
+#: .\shared_utils\decorators.py:41
+msgid "Method Not Allowed (Requires PUT)"
+msgstr ""

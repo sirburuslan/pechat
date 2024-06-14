@@ -1,0 +1,13 @@
+<main class="flex pc-errors-main">
+  <div class="w-full pc-errors-content">
+    <div class="pc-errors-container flex items-center justify-center">
+      <div class="pc-errors-text">
+        <h2>{{ 'the_page_not_found' | translate }}</h2>
+        <a href="/" class="flex justify-between">
+          {{ 'go_home' | translate }}
+          <app-icon [iconName]="'arrow_right_alt'" [extraClass]="'pc-errors-homepage-icon'"></app-icon>
+        </a>
+      </div>
+    </div>
+  </div>
+</main>

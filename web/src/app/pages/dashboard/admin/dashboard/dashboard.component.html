@@ -1,0 +1,150 @@
+<div class="grid md:grid-cols-1 lg:grid-cols-3 gap-4 pc-dashboard-container">
+  <div class="pc-events-section">
+    <div class="flex mb-3">
+      <div class="w-full">
+        <h2 class="pc-page-title">
+          {{ 'events' | translate }}
+        </h2>
+      </div>
+    </div>
+    <div class="flex">
+      <div class="w-full pc-events">
+          <div class="pc-events-header flex">
+              <div class="pc-events-date-navigator pc-transparent-color">
+                  <div class="flex">
+                      <div class="flex-none">
+                          <button type="button" class="pc-events-date-previous-date" onClick={prevDate}>
+                            <app-icon
+                              [iconName]="'chevron_left'"
+                            ></app-icon>
+                          </button>
+                      </div>
+                      <div class="grow h-14 text-center">
+                          <h4>
+                              <!--{ iDate.toString().padStart(2, '0') } { getMonth((iMonth + 1).toString().padStart(2, '0')) } { iYear }-->
+                          </h4>
+                      </div>
+                      <div class="flex-none">
+                          <button type="button" class="pc-events-date-next-date" onClick={nextDate}>
+                            <app-icon
+                              [iconName]="'chevron_right'"
+                            ></app-icon>
+                          </button>
+                      </div>
+                  </div>
+              </div>
+              <div class="pc-events-calendar flex justify-between pc-transparent-color" data-expand="false">
+                    <app-icon
+                      [iconName]="'calendar_month'"
+                    ></app-icon>
+                    <button type="button" class="pc-events-calendar-open" onClick={calendarButtonClick}>
+                      <app-icon
+                      [iconName]="'expand_more'"
+                      [extraClass]="'pc-dropdown-arrow-down-icon'"
+                    ></app-icon>
+                  </button>
+                  <div class="pc-events-calendar-container" ref={calendarBtn}>
+                      <!--<UiCalendar date={iDate.toString().padStart(2, '0')} month={(iMonth + 1).toString().padStart(2, '0')} year={iYear.toString()} />-->
+                  </div>
+              </div>
+          </div>
+          <div class="pc-events-body flex">
+              <div class="pc-events-list">
+                  <div class="pc-no-events-found">
+                      <p>{{ 'no_events_were_found' | translate }}</p>
+                  </div>
+                  <!--{(dashboardContent.events.length > 0)?(dashboardContent.events.map((event: {[key: string]: string | number}, index: Number): React.JSX.Element => {
+
+                      // Verify if typeID is 1
+                      if ( event.typeId === 1 ) {
+
+                          return (<div class="justify-start items-start p-3 pc-event pc-event-new-member flex" key={event.eventId}>
+                              {(typeof event.profilePhoto === 'string')?(
+                                  <Image class="h-10 w-10 rounded-full" width={40} height={40} src={event.profilePhoto as string} alt="Member Photo" onError={(e: SyntheticEvent<HTMLImageElement, Event>): void => {e.currentTarget.src = '/assets/img/cover.png'}} />
+                              ): (
+                                  <div class="flex pc-event-icon items-center justify-center">
+                                      { getIcon('IconPerson') }
+                                  </div>
+                              )}
+                              <div class="pc-event-text">
+                                  <h4>
+                                      <Link href={'/admin/members/' + event.memberId}>{(event.firstName !== '')?event.firstName + ' ' + event.lastName:'#' + event.memberId}</Link> {getWord('admin', 'admin_has_joined', memberOptions['Language'])} {getWord('default', 'default_website_name', memberOptions['Language'])}.
+                                  </h4>
+                                  <h6>{calculateTime(dashboardContent.time, event.created as number, memberOptions['Language'])}</h6>
+                              </div>
+                          </div>);
+
+                      }
+
+                      return (<div class="justify-start items-start p-3 pc-event pc-event-new-transaction flex" key={event.eventId}>
+                          {(typeof event.profilePhoto === 'string')?(
+                              <Image class="h-10 w-10 rounded-full" src={event.profilePhoto as string} width={40} height={40} alt="Member Photo" onError={(e: SyntheticEvent<HTMLImageElement, Event>): void => {e.currentTarget.src = '/assets/img/cover.png'}} />
+                          ): (
+                              <div class="flex pc-event-icon items-center justify-center">
+                                  { getIcon('IconPerson') }
+                              </div>
+                          )}
+                          <div class="pc-event-text">
+                              <h4>
+                                  <Link href={'/admin/members/' + event.memberId}>{(event.firstName !== '')?event.firstName + ' ' + event.lastName:'#' + event.memberId}</Link> {getWord('admin', 'admin_has_made_a_purchase', memberOptions['Language'])}
+                              </h4>
+                              <h6>{calculateTime(dashboardContent.time, event.created as number, memberOptions['Language'])}</h6>
+                          </div>
+                      </div>);
+
+                  })):(
+                      <div class="pc-no-events-found">
+                          <p>{{ 'no_events_were_found' | translate }}</p>
+                      </div>
+                  )}-->
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-span-2">
+    <div class="pc-dashboard-widget">
+      <div class="pc-dashboard-widget-head flex justify-between">
+          <h3>
+              <app-icon
+                [iconName]="'add_shopping_cart'"
+                [extraClass]="'pc-dashboard-widget-icon'"
+              ></app-icon>
+              <span class="pc-dashboard-widget-text">
+                  {{ 'transactions' | translate }}
+              </span>
+          </h3>
+      </div>
+      <div class="pc-dashboard-widget-body">
+          <ul class="pc-transactions-list">
+              <li class="pc-no-results-found">{{ 'no_transactions_were_found' | translate }}</li>
+              <!--{(dashboardContent.transactions.length > 0)?dashboardContent.transactions.map((transaction: {[key: string]: string}, index: number): React.JSX.Element => {
+                  return (<li key={transaction.transactionId}>
+                      <Link href={'/admin/transactions/' + transaction.transactionId} class="flex justify-between">
+                          <div>
+                              <h2>{unescapeRegexString(transaction.planName)}</h2>
+                              <p>{calculateTime(parseInt(transaction.created), dashboardContent.time, memberOptions['Language'])}</p>
+                          </div>
+                          <div>
+                              <h3>{transaction.planCurrency + " " + transaction.planPrice}</h3>
+                          </div>
+                          <div class="flex justify-end">
+                              {(typeof transaction.profilePhoto === 'string')?(
+                                  <Image class="h-10 w-10 rounded-full" width={40} height={40} src={transaction.profilePhoto as string} alt="Member Photo" onError={(e: SyntheticEvent<HTMLImageElement, Event>): void => {e.currentTarget.src = '/assets/img/cover.png'}} />
+                              ): (
+                                  <span class="pc-transaction-user-icon">
+                                      {getIcon('IconPerson')}
+                                  </span>
+                              )}
+                          </div>
+                      </Link>
+                  </li>);
+
+              }):(
+                  <li class="pc-no-results-found">{ getWord('admin', 'admin_no_transactions_were_found', memberOptions['Language'])  }</li>
+              )}-->
+          </ul>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+<div class="container mx-auto px-4 md:px-6 pc-auth-container">
+  <div class="max-w-md mx-auto">
+    <!--{(websiteOptions.SignInPageLogo)?(
+          <div class="grid">
+              <div class="col-1 text-center">
+                  <Link href={'/'} class="pc-auth-logo">
+                      <Image src={websiteOptions.SignInPageLogo} fill={true} sizes="(max-width: 200px)" alt="Member Access" />
+                  </Link>
+              </div>
+          </div>
+      ):''}-->
+    <div class="grid">
+      <div class="col-1">
+        <ng-content />
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,72 @@
+// GENERAL LOADING ANIMATION
+.pc-page-loading {
+  transform: scaleX(1);
+  transform-origin: right;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 9999;
+  background-color: #ffffff;
+  transition: all 0.3s ease-in-out;
+
+  &.pc-page-loading-hide {
+    transform: scaleX(0);
+  }
+
+  .pc-loading-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -70px 0 0 -70px;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: #ffffff;
+
+    .pc-loading-circle {
+      .pc-loading-text {
+        position: absolute;
+        z-index: 100;
+        margin-top: 2px;
+        margin-left: 2px;
+        width: 136px;
+        height: 136px;
+        border-radius: 50%;
+        line-height: 140px;
+        text-align: center;
+        font-family: $font-4;
+        font-weight: 400;
+        font-size: 32px;
+        background: #ffffff;
+        color: $color-blue-dark-extra;
+      }
+
+      .pc-loading-circle-box,
+      .pc-loading-circle-fill {
+        width: 140px;
+        height: 140px;
+        position: absolute;
+        border-radius: 50%;
+      }
+
+      .pc-loading-circle-box {
+        clip: rect(0px, 140px, 140px, 70px);
+      }
+
+      .pc-loading-circle-box {
+        .pc-loading-circle-fill {
+          clip: rect(0px, 70px, 140px, 0px);
+          background-color: $color-blue-dark-extra;
+        }
+
+        &.pc-loading-circle-box-complete,
+        .pc-loading-circle-fill {
+          transform: rotate(180deg);
+          animation: fc-page-loading ease-in-out 2.1s;
+        }
+      }
+    }
+  }
+}

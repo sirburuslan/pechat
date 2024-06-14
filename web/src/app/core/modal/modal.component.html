@@ -1,0 +1,6 @@
+<div class="pc-modal" [ngClass]="modalStatus" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+  <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity pc-modal-cover" (click)="closeModal()" (keydown)="handleKeydown()" role="button" tabindex="0" aria-label="Close modal"></div>
+  <div class="pc-modal-container" [ngClass]="modalSize">
+    <ng-content newMember></ng-content>
+  </div>
+</div>

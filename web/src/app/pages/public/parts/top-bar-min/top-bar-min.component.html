@@ -1,0 +1,18 @@
+<div class="pc-top-bar">
+  <div class="pc-top-bar-container">
+    <div class="pc-top-bar-logo">
+      <a href="{{ siteUrl }}">
+        {{ siteName }}
+      </a>
+    </div>
+    <div class="pc-top-bar-menu"></div>
+    <div class="pc-top-bar-auth">
+      <a routerLink="/auth/signin" class="pc-auth-sign-in">{{
+        'sign_in' | translate
+      }}</a>
+      <a routerLink="/auth/registration" class="pc-auth-sign-up">{{
+        'sign_up' | translate
+      }}</a>
+    </div>
+  </div>
+</div>
