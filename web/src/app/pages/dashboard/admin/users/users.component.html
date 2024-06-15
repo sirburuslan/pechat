@@ -195,12 +195,16 @@
           <button type="submit" class="mb-3 flex justify-between pc-submit-button">
             {{ 'save_user' | translate }}
             <app-icon
+              *ngIf="isSubmitting"
               [iconName]="'autorenew'"
               [extraClass]="'pc-load-more-icon'"
+              [@iconAnimation]="isSubmitting ? 'rotating' : 'hidden'"
             ></app-icon>
             <app-icon
+              *ngIf="!isSubmitting"
               [iconName]="'arrow_forward'"
               [extraClass]="'pc-next-icon'"
+              [@iconAnimation]="isSubmitting ? 'hidden' : 'visible'"
             ></app-icon>
           </button>
         </div>

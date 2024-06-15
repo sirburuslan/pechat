@@ -103,21 +103,6 @@ body:has(.pc-modal-show) {
             font-size: 18px;
           }
 
-          .pc-load-more-icon {
-            display: none;
-          }
-
-          &.pc-active-button {
-            .pc-next-icon {
-              display: none;
-            }
-
-            .pc-load-more-icon {
-              display: inherit;
-              animation: 2s pc-rotate-icon-animation-next infinite linear;
-            }
-          }
-
           &.pc-option-violet-btn {
             background-color: rgba($color-violet, 1);
 

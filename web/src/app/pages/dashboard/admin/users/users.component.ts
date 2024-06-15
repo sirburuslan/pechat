@@ -46,6 +46,7 @@ import { ModalService } from '../../../../services/modal.service';
 import { UsersService } from '../../../../services/users.service';
 import { UtilsService } from '../../../../services/utils.service';
 import { NotificationsDirective } from '../../../../shared/directives/notifications.directive';
+import { animate, keyframes, state, style, transition, trigger } from '@angular/animations';
 
 // Configuration
 @Component({
@@ -62,6 +63,28 @@ import { NotificationsDirective } from '../../../../shared/directives/notificati
   ],
   templateUrl: './users.component.html',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  animations: [
+    trigger('iconAnimation', [
+      state('hidden', style({ opacity: 0 })),
+      state('visible', style({opacity: 1 })),
+      state('rotating', style({ opacity: 1, animation: '2s pc-rotate-icon-animation-next infinite linear' })),
+      transition('hidden => visible', [
+        animate('0.5s')
+      ]),
+      transition('visible => rotating', [
+        animate('0.5s')
+      ]),
+      transition('rotating => rotating', [
+        animate('2s', keyframes([
+          style({ transform: 'rotate(0deg)' }),
+          style({ transform: 'rotate(360deg)' })
+        ]))
+      ]),
+      transition('rotating => hidden', [
+        animate('0.5s')
+      ])
+    ])
+  ]
 })
 
 // Logic
@@ -107,6 +130,9 @@ export class UsersComponent implements OnInit, OnDestroy {
   // User Id Holder for deletion
   userId!: number;
 
+  // Submitting status
+  isSubmitting = false;
+
   constructor(
     private readonly title: Title,
     private readonly fb: FormBuilder,
@@ -138,7 +164,7 @@ export class UsersComponent implements OnInit, OnDestroy {
       ],
     });
 
-    this.usersListSubscription = this.usersService.userList.subscribe(
+    this.usersListSubscription = this.usersService.usersList.subscribe(
       (users) => {
         this.usersList = users?.items ? users.items : [];
         this.users.total = users?.items
@@ -207,6 +233,9 @@ export class UsersComponent implements OnInit, OnDestroy {
   onSubmit(event: Event) {
     event.preventDefault();
 
+    // Enable the animation
+    this.isSubmitting = true;
+
     // Reset error messages
     this.errors.firstName = '';
     this.errors.lastName = '';
@@ -246,6 +275,9 @@ export class UsersComponent implements OnInit, OnDestroy {
         error: (err) => {
           console.log(err);
         },
+        complete: () => {
+          //this.isSubmitting = false;
+        }
       });
     } else {
       // Check if errors exists for first name

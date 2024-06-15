@@ -28,8 +28,8 @@ import { environment } from '../../environment';
 
 // Logic
 export class UsersService {
-  private userListSubject = new BehaviorSubject<List<User[]> | null>(null);
-  public userList = this.userListSubject
+  private usersListSubject = new BehaviorSubject<List<User[]> | null>(null);
+  public usersList = this.usersListSubject
   .asObservable()
   .pipe(distinctUntilChanged())
 
@@ -48,7 +48,7 @@ export class UsersService {
   getUsers(page: number, search: string = '') {
     search = search?encodeURIComponent(search):'';
     // Get the users list
-    this.httpClient.get<List<User[]>>(environment.apiUrl + 'api/v1.0/admin/users/list?page=' + page + '&search=' + search)
+    this.httpClient.get<List<User[]>>(environment.apiUrl + `api/v1.0/admin/users/list?page=${page}&search=${search}`)
     .pipe(
       tap(response => {
         this.updateUsersList(response)
@@ -62,17 +62,18 @@ export class UsersService {
 
   deleteUser(id: number) {
     // Try to delete the user
-    return this.httpClient.delete<ApiResponse<null>>(environment.apiUrl +  'api/v1.0/admin/users/' + id + '/delete');
+    return this.httpClient.delete<ApiResponse<null>>(environment.apiUrl +  `api/v1.0/admin/users/${id}/delete`);
   }
 
   // Private methods
 
   private updateUsersList(response: List<User[]>) {
-    this.userListSubject.next(response.items?response:null);
+    this.usersListSubject.next(response.items?response:null);
   }
 
   private handleErrors(error: unknown) {
     console.error('Error occurred:', error);
+    this.usersListSubject.next(null);
   }
 
 }
