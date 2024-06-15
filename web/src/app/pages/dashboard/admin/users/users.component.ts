@@ -46,7 +46,7 @@ import { ModalService } from '../../../../services/modal.service';
 import { UsersService } from '../../../../services/users.service';
 import { UtilsService } from '../../../../services/utils.service';
 import { NotificationsDirective } from '../../../../shared/directives/notifications.directive';
-import { animate, keyframes, state, style, transition, trigger } from '@angular/animations';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 // Configuration
 @Component({
@@ -67,20 +67,8 @@ import { animate, keyframes, state, style, transition, trigger } from '@angular/
     trigger('iconAnimation', [
       state('hidden', style({ opacity: 0 })),
       state('visible', style({opacity: 1 })),
-      state('rotating', style({ opacity: 1, animation: '2s pc-rotate-icon-animation-next infinite linear' })),
+      state('rotating', style({ opacity: 1, animation: '2s pc-rotate-icon-animation-next infinite linear'})),
       transition('hidden => visible', [
-        animate('0.5s')
-      ]),
-      transition('visible => rotating', [
-        animate('0.5s')
-      ]),
-      transition('rotating => rotating', [
-        animate('2s', keyframes([
-          style({ transform: 'rotate(0deg)' }),
-          style({ transform: 'rotate(360deg)' })
-        ]))
-      ]),
-      transition('rotating => hidden', [
         animate('0.5s')
       ])
     ])
@@ -276,7 +264,7 @@ export class UsersComponent implements OnInit, OnDestroy {
           console.log(err);
         },
         complete: () => {
-          //this.isSubmitting = false;
+          this.isSubmitting = false;
         }
       });
     } else {
