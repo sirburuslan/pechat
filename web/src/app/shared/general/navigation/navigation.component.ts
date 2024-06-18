@@ -33,54 +33,28 @@ export class NavigationComponent implements OnChanges {
   // Returned Data
   @Output() navigate = new EventEmitter<number>();
 
-  pages: {
-    page: number;
-    active: boolean;
-  }[] = [];
+  pages: number[] = [];
 
   ngOnChanges(changes: import('@angular/core').SimpleChanges) {
 
     // Monitor the changes for page
     if (changes['page']) {
 
-      // Empty pages
-      this.pages = [];
+      // Calculate the number of pages divided by limit
+      const totalPages = Math.ceil(this.total / this.limit);
 
-      // Count pages
-      const totalPages: number = Math.ceil(this.total / this.limit) + 1;
+      // Calculate start and end page numbers
+      let startPage = Math.max(this.page - 2, 1);
+      const endPage = Math.min(startPage + 4, totalPages);
 
-      // Calculate start page
-      const from: number = this.page > 2 ? this.page - 2 : 1;
-
-      // List all pages
-      for (let p: number = from; p < totalPages; p++) {
-        // Verify if p is equal to current page
-        if (p === this.page) {
-          // Add current page
-          this.pages.push({
-            page: p,
-            active: true,
-          });
-        } else if (p < this.page + 3 && p > this.page - 3) {
-          // Add page number
-          this.pages.push({
-            page: p,
-            active: false,
-          });
-        } else if (
-          p < 6 &&
-          totalPages > 5 &&
-          (this.page === 1 || this.page === 2)
-        ) {
-          // Add page number
-          this.pages.push({
-            page: p,
-            active: false,
-          });
-        } else {
-          break;
-        }
+      // Adjust startPage if we're at the end of the page range
+      if (endPage === totalPages) {
+        startPage = Math.max(endPage - 4, 1);
       }
+
+      // Generate the array of page numbers
+      this.pages = Array.from({ length: (endPage - startPage) + 1 }, (_, i) => startPage + i);
+
     }
 
   }

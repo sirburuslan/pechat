@@ -29,6 +29,7 @@ export class HttpInterceptorService implements HttpInterceptor {
     private readonly tokensService: TokensService
   ) {}
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+    console.log(this.tokensService.getToken);
     if (this.tokensService.getToken !== '') {
       const modifiedReq = req.clone({
         headers: req.headers.set('Authorization', 'Token ' + this.tokensService.getToken)

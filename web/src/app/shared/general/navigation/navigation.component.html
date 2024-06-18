@@ -11,8 +11,8 @@
       </a>
     </li>
     <li class="page-item" *ngFor="let p of pages">
-        <a href="#" class="page-link" [ngClass]="{'active': p.active}" (click)="onPageClick($event, p.page)">
-          {{ p.page }}
+        <a href="#" class="page-link" [ngClass]="{'active': (page === p)}" (click)="onPageClick($event, p)">
+          {{ p }}
         </a>
     </li>
     <li class="page-item" *ngIf="(limit * page) < total; else noNext">

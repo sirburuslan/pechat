@@ -28,17 +28,17 @@ export class TokensService {
   // Accessors
 
   get getToken(): string {
-    return this.cookieService.get('jwt7');
+    return this.cookieService.get('jwt');
   }
 
   // Other methods
 
   saveToken(token: string): void {
-    this.cookieService.set('jwt7', token, { path: '/', expires: 14, secure: true, sameSite: 'Strict' })
+    this.cookieService.set('jwt', token, { path: '/', expires: 14, secure: true, sameSite: 'Strict' })
   }
 
   deleteToken(): void {
-    this.cookieService.delete('jwt7', '/');
+    this.cookieService.delete('jwt', '/');
   }
 
 }
