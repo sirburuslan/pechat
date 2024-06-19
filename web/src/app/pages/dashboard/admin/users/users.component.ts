@@ -3,7 +3,6 @@ import {
   Component,
   OnDestroy,
   OnInit,
-  Renderer2,
   TemplateRef,
   ViewChild,
   ViewContainerRef,
@@ -124,7 +123,6 @@ export class UsersComponent implements OnInit, OnDestroy {
   constructor(
     private readonly title: Title,
     private readonly fb: FormBuilder,
-    private readonly renderer: Renderer2,
     private readonly translateService: TranslateService,
     private readonly modalService: ModalService,
     private readonly usersService: UsersService,

@@ -2,7 +2,7 @@
   <h3>
     {{ (((page - 1) * limit) + 1) + '-' + (((page * limit) < total)?(page * limit):total) }} {{ 'of' | translate }} {{ total}} {{ 'results' | translate }}
   </h3>
-  <ul class="flex" [attr.data-scope]="scope">
+  <ul class="flex">
     <li class="page-item" *ngIf="page > 1; else noPrevious">
       <a href="#" class="page-link" [attr.data-page]="page - 1" (click)="onPageClick($event, (page - 1))">
         <app-icon

@@ -25,7 +25,6 @@ import { IconComponent } from '../icon/icon.component';
 // Logic
 export class NavigationComponent implements OnChanges {
   // Received Data
-  @Input() scope!: string;
   @Input() total!: number;
   @Input() page!: number;
   @Input() limit!: number;
@@ -33,12 +32,13 @@ export class NavigationComponent implements OnChanges {
   // Returned Data
   @Output() navigate = new EventEmitter<number>();
 
+  // Pages Links container
   pages: number[] = [];
 
   ngOnChanges(changes: import('@angular/core').SimpleChanges) {
 
-    // Monitor the changes for page
-    if (changes['page']) {
+    // Monitor the changes for page and total
+    if (changes['page'] || changes['total']) {
 
       // Calculate the number of pages divided by limit
       const totalPages = Math.ceil(this.total / this.limit);

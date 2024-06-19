@@ -1,0 +1,133 @@
+<div class="pc-member-container">
+  <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-7 gap-1 sm:gap-1 md:gap-6 lg:gap-6 xl:gap-6 mb-3">
+      <div class="pc-profile-photo-area mb-10">
+          <div class="flex">
+              <div class="w-full">
+                  <h3 class="pc-section-title">
+                      {{ 'profile_image' | translate }}
+                  </h3>
+              </div>
+          </div>
+          <div class="flex mb-3">
+              <div class="w-full">
+                  <div class="pc-profile-photo pc-profile-photo-green-background flex items-center justify-center">
+                        <div class="pc-profile-photo-cover">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                            </svg>
+                        </div>
+                  </div>
+              </div>
+          </div>
+          <div class="flex">
+              <div class="w-full text-center">
+                  <!--<Link href="#" onClick={(e: React.MouseEvent<HTMLAnchorElement>): void => {
+                      e.preventDefault();
+                      ((e.target as Element).closest('.flex')!.getElementsByClass('pc-profile-upload-file')[0] as HTMLButtonElement).click();
+                  }}>
+                      { getIcon('IconCropOriginal', {class: 'pc-uploading-icon'}) }
+                      { getIcon('IconAddPhotoAlternate', {class: 'pc-default-icon'}) }
+                      { getWord('default', 'default_change_profile_image', memberOptions['Language']) }
+                  </Link>
+                  <form>
+                      <input type="file" accept="image/jpeg,image/gif,image/png" name={"pc-profile-file-input-profile-photo"} id={"pc-profile-file-input-profile-photo"} class="pc-profile-upload-file" onChange={uploadImage} />
+                  </form>-->
+              </div>
+          </div>
+      </div>
+      <!--<div class="pc-member-options col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-3">
+          <MemberData memberId={params.slug} fields={fields} setFields={setFields} />
+      </div>
+      <div class="pc-member-events col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-3">
+          <div class="flex">
+              <div class="w-full">
+                  <h3 class="pc-section-title">
+                      { getWord('default', 'default_events', memberOptions['Language']) }
+                  </h3>
+              </div>
+          </div>
+          <div class="flex">
+              <div class="w-full pc-events">
+                  <div class="pc-events-header flex">
+                      <div class="pc-events-date-navigator pc-transparent-color">
+                          <div class="flex">
+                              <div class="flex-none">
+                                  <button type="button" class="pc-events-date-previous-date" onClick={prevDate}>
+                                      { getIcon('IconChevronLeft') }
+                                  </button>
+                              </div>
+                              <div class="grow h-14 text-center">
+                                  <h4>
+                                      { iDate.toString().padStart(2, '0') } { getMonth((iMonth + 1).toString().padStart(2, '0')) } { iYear }
+                                  </h4>
+                              </div>
+                              <div class="flex-none">
+                                  <button type="button" class="pc-events-date-next-date" onClick={nextDate}>
+                                      { getIcon('IconChevronRight') }
+                                  </button>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="pc-events-calendar flex justify-between pc-transparent-color" data-expand="false">
+                          { getIcon('IconCalendarMonth') }
+                          <button type="button" class="pc-events-calendar-open" onClick={calendarButtonClick}>
+                              { getIcon('IconExpandMore', {class: 'pc-dropdown-arrow-down-icon'}) }
+                          </button>
+                          <div class="pc-events-calendar-container" ref={calendarBtn}>
+                              <UiCalendar date={iDate.toString().padStart(2, '0')} month={(iMonth + 1).toString().padStart(2, '0')} year={iYear.toString()} />
+                          </div>
+                      </div>
+                  </div>
+                  <div class="pc-events-body flex">
+                      <div class="pc-events-list">
+                          {(events.list.length > 0)?(events.list.map((event: {[key: string]: string | number}, index: Number): React.JSX.Element => {
+
+                              // Verify if typeID is 1
+                              if ( event.typeId === 1 ) {
+
+                                  return (<div class="justify-start items-start p-3 pc-event pc-event-new-member flex" key={event.eventId}>
+                                      {(typeof event.profilePhoto === 'string')?(
+                                          <Image class="h-10 w-10 rounded-full" width={40} height={40} src={event.profilePhoto} alt="Member Photo" onError={(e: SyntheticEvent<HTMLImageElement, Event>): void => {e.currentTarget.src = '/assets/img/cover.png'}} />
+                                      ): (
+                                          <div class="flex pc-event-icon items-center justify-center">
+                                              { getIcon('IconPerson') }
+                                          </div>
+                                      )}
+                                      <div class="pc-event-text">
+                                          <h4>
+                                              <Link href={'/admin/members/' + event.memberId}>{(event.firstName !== '')?event.firstName + ' ' + event.lastName:'#' + event.memberId}</Link> {getWord('admin', 'admin_has_joined', memberOptions['Language'])} {getWord('default', 'default_website_name', memberOptions['Language'])}.
+                                          </h4>
+                                          <h6>{calculateTime(events.time, event.created as number, memberOptions['Language'])}</h6>
+                                      </div>
+                                  </div>);
+
+                              }
+
+                              return (<div class="justify-start items-start p-3 pc-event pc-event-new-transaction flex" key={event.eventId}>
+                                  {(typeof event.profilePhoto === 'string')?(
+                                      <Image class="h-10 w-10 rounded-full" src={event.profilePhoto} width={40} height={40} alt="Member Photo" onError={(e: SyntheticEvent<HTMLImageElement, Event>): void => {e.currentTarget.src = '/assets/img/cover.png'}} />
+                                  ): (
+                                      <div class="flex pc-event-icon items-center justify-center">
+                                          { getIcon('IconPerson') }
+                                      </div>
+                                  )}
+                                  <div class="pc-event-text">
+                                      <h4>
+                                          <Link href={'/admin/members/' + event.memberId}>{(event.firstName !== '')?event.firstName + ' ' + event.lastName:'#' + event.memberId}</Link> {getWord('admin', 'admin_has_made_a_purchase', memberOptions['Language'])}
+                                      </h4>
+                                      <h6>{calculateTime(events.time, event.created as number, memberOptions['Language'])}</h6>
+                                  </div>
+                              </div>);
+
+                          })):(
+                              <div class="pc-no-events-found">
+                                  <p>{ getWord('admin', 'admin_no_events_were_found', memberOptions['Language'])  }</p>
+                              </div>
+                          )}
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>-->
+  </div>
+</div>

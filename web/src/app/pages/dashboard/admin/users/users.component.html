@@ -103,7 +103,7 @@
         </div>
       </div>
   </div>
-  <app-navigation [scope]="'users'" [total]="users.total" [page]="users.page" [limit]="24" (navigate)="navigateTo($event)"></app-navigation>
+  <app-navigation [total]="users.total" [page]="users.page" [limit]="24" (navigate)="navigateTo($event)"></app-navigation>
 </div>
 <ng-template #newUser>
   <div class="pc-modal-header flex justify-between">

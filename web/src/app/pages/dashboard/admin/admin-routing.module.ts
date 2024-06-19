@@ -7,6 +7,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminGuard } from '../../../core/guards/admin.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UsersComponent } from './users/users.component';
+import { UserComponent } from './users/user/user.component';
 import { PlansComponent } from './plans/plans.component';
 import { TransactionsComponent } from './transactions/transactions.component';
 import { SettingsComponent } from './settings/settings.component';
@@ -27,6 +28,11 @@ const routes: Routes = [
       {
         path: 'users',
         component: UsersComponent,
+        canActivate: [AdminGuard],
+      },
+      {
+        path: 'users/:id',
+        component: UserComponent,
         canActivate: [AdminGuard],
       },
       {
