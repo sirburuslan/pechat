@@ -53,9 +53,9 @@ export class UsersService {
       tap(response => {
         this.updateUsersList(response)
       }),
+      take(1),
       catchError(async (error) => this.handleErrors(error))
     )
-    .pipe(take(1))
     .subscribe();
 
   }

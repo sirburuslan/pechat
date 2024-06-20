@@ -29,7 +29,7 @@
               <app-icon [iconName]="'person_add_alt'"></app-icon>
               {{ 'new_user' | translate }}
           </button>
-          <button class="ec-search-btn pc-export-users-button">
+          <button class="ec-search-btn pc-export-users-button" (click)="exportUsers()">
               <app-icon [iconName]="'cloud_download'"></app-icon>
               {{ 'export' | translate }}
           </button>

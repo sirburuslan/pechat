@@ -337,6 +337,81 @@ export class UsersComponent implements OnInit, OnDestroy {
     });
   }
 
+  exportUsers() {
+
+    this.usersListSubscription = this.usersService.usersList.subscribe(
+      (response) => {
+
+        // Verify if the response is successfully
+        if ( response && response.items && response.items.length !== 0 ) {
+
+          // Set the list
+          let list: [string[]] | null = null;
+
+          // Append to list
+          list = [[
+            '"' + this.translateService.instant('user_id') + '"',
+            '"' + this.translateService.instant('first_name') + '"',
+            '"' + this.translateService.instant('last_name') + '"',
+            '"' + this.translateService.instant('email') + '"'
+          ]];
+
+          // Total number of users
+          const usersTotal: number = response.items.length;
+
+          // List all numbers
+          for ( let i = 0; i < usersTotal; i++ ) {
+
+              // Append to list
+              list.push([
+                '"' + response.items[i].id + '"',
+                '"' + response.items[i].first_name + '"',
+                '"' + response.items[i].last_name + '"',
+                '"' + response.items[i].email + '"'
+              ]);
+
+          }
+
+          // CSV variable
+          let csv: string = '';
+
+          // Prepare the csv
+          list!.forEach(function(row) {
+              csv += row.join(',');
+              csv += "\n";
+          });
+
+          // Create the CSV link and download the file
+          const csv_link: HTMLAnchorElement = document.createElement('a');
+
+          // Set charset
+          csv_link.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+
+          // Open in new tab the file
+          csv_link.target = '_blank';
+
+          // Set the name of the file
+          csv_link.download = 'members.csv';
+
+          // Download the CSV
+          csv_link.click();
+
+        } else {
+
+          // Show error
+          this.notificationsDirective.showNotification(
+            'error',
+            this.translateService.instant('no_users_were_found')
+          );
+
+        }
+
+      }
+      
+    );
+
+  }
+
   deleteConfirmation(userId: string | number) {
     if (typeof userId === 'number') {
       this.userId = userId;
