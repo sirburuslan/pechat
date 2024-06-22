@@ -26,7 +26,7 @@
       background-color: #83b9d8;
       color: #ffffff;
 
-      & > * {
+      * {
         margin: auto;
         width: 91px;
         height: 89px;
@@ -53,15 +53,15 @@
       }
     }
 
-    & > * {
+    * {
       vertical-align: middle;
-      margin-top: -5px;
+      margin-top: -10px;
       margin-right: 5px;
       font-size: 22px;
       transition: top 0.3s ease-in;
     }
 
-    & > .pc-uploading-icon {
+    .pc-uploading-icon {
       display: none;
     }
   }
@@ -72,7 +72,7 @@
 
   &.pc-uploading-active {
     a {
-      & > .pc-uploading-icon {
+      .pc-uploading-icon {
         display: inline-flex;
         position: relative;
         margin-top: -4px;
@@ -89,7 +89,7 @@
         }
       }
 
-      & > .pc-default-icon {
+      .pc-default-icon {
         display: none;
       }
     }

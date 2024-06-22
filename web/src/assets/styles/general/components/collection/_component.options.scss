@@ -3,7 +3,7 @@
   margin: 0;
   padding: 0;
 
-  & > li {
+  li {
     margin-bottom: 15px;
     list-style: none;
 
@@ -131,7 +131,7 @@
         color: $color-black-light;
       }
 
-      & > * {
+      * {
         font-size: 18px;
       }
     }
@@ -220,7 +220,7 @@
             margin-bottom: 0;
           }
 
-          & > span {
+          span {
             padding-right: 25px;
             line-height: 25px;
             font-family: $font-2;
@@ -281,19 +281,19 @@
           width: 100%;
         }
 
-        & > .pc-option-checkbox-checked-icon {
+        .pc-option-checkbox-checked-icon {
           display: none;
         }
 
-        & > .pc-option-checkbox-check-icon,
-        & > .pc-option-checkbox-checked-icon {
+        .pc-option-checkbox-check-icon,
+        .pc-option-checkbox-checked-icon {
           vertical-align: middle;
           margin-top: -4px;
           margin-right: 8px;
           font-size: 22px;
         }
 
-        & > .pc-option-checkbox-checked-text {
+        .pc-option-checkbox-checked-text {
           display: none;
         }
       }
@@ -301,19 +301,19 @@
       input:checked + label {
         color: #ffffff;
 
-        & > .pc-option-checkbox-check-icon {
+        .pc-option-checkbox-check-icon {
           display: none;
         }
 
-        & > .pc-option-checkbox-checked-icon {
+        .pc-option-checkbox-checked-icon {
           display: inline-block;
         }
 
-        & > .pc-option-checkbox-check-text {
+        .pc-option-checkbox-check-text {
           display: none;
         }
 
-        & > .pc-option-checkbox-checked-text {
+        .pc-option-checkbox-checked-text {
           display: inline-block;
         }
       }
@@ -332,11 +332,11 @@
   background-color: $color-blue-light;
   color: $color-black-light-extra;
 
-  > * {
+  * {
     vertical-align: middle;
     margin-top: -2px;
-    margin-right: 8px;
-    font-size: 20px;
+    margin-right: 2px;
+    font-size: 24px;
 
     &.pc-load-more-icon {
       display: none;
@@ -344,10 +344,10 @@
   }
 
   &.pc-option-green-btn {
-    background-color: rgba($color-green-light-extra, 1);
+    background-color: rgba($color-green-light, 1);
 
     &:hover {
-      background-color: rgba($color-green-light-extra, 0.6);
+      background-color: rgba($color-green-light, 0.6);
     }
   }
 
@@ -369,11 +369,11 @@
   }
 
   &.pc-option-active-btn {
-    & > .pc-load-icon {
+    .pc-load-icon {
       display: none;
     }
 
-    & > .pc-load-more-icon {
+    .pc-load-more-icon {
       display: inline-block;
       animation: 2s pc-rotate-icon-animation-next infinite linear;
     }

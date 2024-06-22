@@ -21,6 +21,16 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger
+} from '@angular/animations';
+import {
+  RouterLink
+} from '@angular/router';
 
 // Installed Utils
 import {
@@ -45,7 +55,6 @@ import { ModalService } from '../../../../services/modal.service';
 import { UsersService } from '../../../../services/users.service';
 import { UtilsService } from '../../../../services/utils.service';
 import { NotificationsDirective } from '../../../../shared/directives/notifications.directive';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 
 // Configuration
 @Component({
@@ -59,6 +68,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
     DropdownComponent,
     IconComponent,
     NavigationComponent,
+    RouterLink
   ],
   templateUrl: './users.component.html',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -407,7 +417,7 @@ export class UsersComponent implements OnInit, OnDestroy {
         }
 
       }
-      
+
     );
 
   }

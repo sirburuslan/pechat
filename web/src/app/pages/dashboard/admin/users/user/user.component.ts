@@ -8,12 +8,16 @@ import {
   TranslateService
 } from '@ngx-translate/core';
 
+// App Utils
+import { IconComponent } from '../../../../../shared/general/icon/icon.component';
+
 // Configuration
 @Component({
   selector: 'app-user',
   standalone: true,
   imports: [
-    TranslateModule
+    TranslateModule,
+    IconComponent
   ],
   templateUrl: './user.component.html'
 })

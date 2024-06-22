@@ -57,7 +57,7 @@
               </div>
               <div class="grid grid-cols-1 content-around pc-user-info">
                 <h3>
-                  <a href="#">
+                  <a [routerLink]="'/admin/users/' + user.id">
                     {{ (user.first_name && user.last_name)?user.first_name + ' ' + user.last_name:user.email }}
                   </a>
                 </h3>
