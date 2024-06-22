@@ -7,10 +7,6 @@
     margin-bottom: 15px;
     list-style: none;
 
-    &:last-child {
-      margin-bottom: 0;
-    }
-
     .pc-option-text,
     .pc-option-email,
     .pc-option-number,
@@ -44,7 +40,7 @@
         font-family: $font-2;
         font-size: 12px;
         font-weight: 400;
-        color: $color-violet-light;
+        color: $color-black;
       }
 
       .pc-option-text-input:focus ~ label,
@@ -53,7 +49,7 @@
       .pc-option-password-input:focus ~ label {
         font-size: 12px;
         font-weight: 400;
-        color: $color-violet-light;
+        color: $color-black;
       }
     }
 

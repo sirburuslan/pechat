@@ -56,9 +56,9 @@ export class SignupComponent {
 
   // Inject the dependecies
   constructor(
-    private titleService: Title,
-    private translate: TranslateService,
-    private fb: FormBuilder,
+    private readonly titleService: Title,
+    private readonly translate: TranslateService,
+    private readonly fb: FormBuilder,
     private readonly router: Router,
     private readonly userService: UserService,
   ) {

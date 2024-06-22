@@ -41,7 +41,7 @@
       </div>
     </div>
     <div class="pc-member-options col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-3">
-      <form>
+      <form [formGroup]="userDataForm" (submit)="onSubmitUserData($event)">
         <div class="flex">
           <div class="w-full">
             <h3 class="pc-section-title">
@@ -52,7 +52,9 @@
         <div class="flex">
           <div class="w-full">
             <ul class="pc-options">
-              
+              <app-field-text [placeholder]="'enter_first_name' | translate" [control]="firstNameControl">
+                {{ 'first_name' | translate }}
+              </app-field-text>
             </ul>
           </div>
         </div>

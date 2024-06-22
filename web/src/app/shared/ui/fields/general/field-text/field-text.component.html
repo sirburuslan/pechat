@@ -1,0 +1,18 @@
+<li class="pc-extra-option">
+  <div class="relative pc-option-text">
+      <input
+          type="text"
+          [name]="uniqueId"
+          [placeholder]="placeholder"
+          value=""
+          [id]="uniqueId"
+          [formControl]="control"
+          class="pc-option-text-input"
+      />
+      <label
+          [for]="uniqueId"
+      >
+        <ng-content></ng-content>
+      </label>
+  </div>
+</li>
