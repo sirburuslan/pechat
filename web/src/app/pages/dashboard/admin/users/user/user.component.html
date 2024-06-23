@@ -55,6 +55,15 @@
               <app-field-text [placeholder]="'enter_first_name' | translate" [control]="firstNameControl">
                 {{ 'first_name' | translate }}
               </app-field-text>
+              <app-field-text [placeholder]="'enter_last_name' | translate" [control]="lastNameControl">
+                {{ 'last_name' | translate }}
+              </app-field-text>
+              <app-field-email [placeholder]="'enter_email_address' | translate" [control]="emailControl">
+                {{ 'email' | translate }}
+              </app-field-email>
+              <app-field-text [placeholder]="'enter_the_phone_number' | translate" [control]="phoneControl">
+                {{ 'phone' | translate }}
+              </app-field-text>
             </ul>
           </div>
         </div>
@@ -66,7 +75,20 @@
         <div class="flex">
           <div class="w-full">
             <ul class="pc-options">
-
+              <app-field-select [dropdownButton]="'role' | translate" [dropdownItems]="[
+                  {
+                    type: 'callback',
+                    text: 'administrator' | translate,
+                    callback: 0
+                  },
+                  {
+                    type: 'callback',
+                    text: 'user' | translate,
+                    callback: 1
+                  }
+                ]" [control]="roleControl">
+                {{ 'role' | translate }}
+              </app-field-select>
             </ul>
           </div>
         </div>
@@ -86,7 +108,7 @@
           </div>
         </div>
       </form>
-      <form onSubmit={passwordUpdate}>
+      <form [formGroup]="userPasswordForm" (submit)="onSubmitUserPassword($event)">
         <div class="flex mt-10">
           <div class="w-full">
             <h3 class="pc-section-title">
@@ -97,7 +119,12 @@
         <div class="flex">
           <div class="w-full">
             <ul class="pc-options">
-
+              <app-field-text [placeholder]="'new_password' | translate" [control]="passwordControl">
+                {{ 'password' | translate }}
+              </app-field-text>
+              <app-field-text [placeholder]="'enter_password_again' | translate" [control]="repeatPasswordControl">
+                {{ 'repeat_password' | translate }}
+              </app-field-text>
             </ul>
           </div>
         </div>

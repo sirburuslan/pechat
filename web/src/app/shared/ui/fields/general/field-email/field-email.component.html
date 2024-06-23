@@ -1,14 +1,15 @@
 <li class="pc-extra-option">
-  <div class="relative pc-option-text">
+  <div class="relative pc-option-email">
       <input
-          type="text"
+          type="email"
           [name]="uniqueId"
           [placeholder]="placeholder"
           value=""
           [id]="uniqueId"
           [formControl]="control"
-          class="pc-option-text-input"
+          class="pc-option-email-input"
           [autocomplete]="uniqueId"
+          readonly="true"
       />
       <label
           [for]="uniqueId"

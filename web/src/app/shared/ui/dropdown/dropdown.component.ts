@@ -78,14 +78,33 @@ export class DropdownComponent implements AfterViewInit {
         // Get menu
         const menu: Element = this.elementRef.nativeElement.getElementsByClassName('pc-dropdown-menu')[0];
 
-        // Get the height
+        // Get the menu height
         const height: number = menu.clientHeight;
+
+        // Get dropdown
+        const dropdown: Element = this.elementRef.nativeElement.getElementsByClassName('pc-dropdown')[0];
+
+        // Get dropdown position from top
+        const dropdownTop: number = dropdown.getBoundingClientRect().top;
 
         // Calculate the height of the button
         const button_height: number = this.elementRef.nativeElement.offsetHeight;
 
-        // Set transformation
-        (menu as HTMLElement).style.marginTop = `-${button_height + height + 10}px`;
+        // Get the window height
+        const windowHeight = window.innerHeight;
+
+        // Verify if there is enough space for menu
+        if ( windowHeight - (dropdownTop + button_height + height + 10) > 14 ) {
+
+          // Set transformation
+          (menu as HTMLElement).style.marginTop = `15px`;
+
+        } else {
+
+          // Set transformation
+          (menu as HTMLElement).style.marginTop = `-${button_height + height + 10}px`;
+
+        }
 
       }, 100);
 
