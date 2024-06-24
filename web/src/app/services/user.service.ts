@@ -10,7 +10,7 @@ import {
   tap,
   of,
   switchMap,
-  catchError
+  catchError,
 } from 'rxjs';
 
 // App Utils
@@ -36,42 +36,40 @@ export class UserService {
 
   // Inject services
   constructor(
-    private readonly httpClient: HttpClient,
-    private readonly tokensService: TokensService,
-    private readonly sidebarStatusService: SidebarStatusService
+    private httpClient: HttpClient,
+    private tokensService: TokensService,
+    private sidebarStatusService: SidebarStatusService,
   ) {}
 
   // Accessors
 
   get check(): Observable<boolean> {
+    if (this.isAuthenticated) return of(true);
 
-    if ( this.isAuthenticated )
-      return of(true);
-
-    if ( !this.tokensService.getToken )
-      return of(false);
+    if (!this.tokensService.getToken) return of(false);
 
     return this.getUser();
-
   }
 
   // Other Methods
   getUser(): Observable<boolean> {
-    return this.httpClient.post(environment.apiUrl + 'api/v1.0/member/settings', {})
-    .pipe(
-      switchMap((response: unknown) => {
-        const res = response as ApiResponse<User>;
-        this.currentUserSubject.next(res.content);
-        this.sidebarStatusService.changeSidebarStatus(res.content?res.content.sidebar:false);
-        this.isAuthenticated = true;
-        return of(true);
-      }),
-      catchError((error: HttpErrorResponse) => {
-        console.error(error.message);
-        return of(false);
-      })
-    );
-
+    return this.httpClient
+      .post(environment.apiUrl + 'api/v1.0/member/settings', {})
+      .pipe(
+        switchMap((response: unknown) => {
+          const res = response as ApiResponse<User>;
+          this.currentUserSubject.next(res.content);
+          this.sidebarStatusService.changeSidebarStatus(
+            res.content ? res.content.sidebar : false,
+          );
+          this.isAuthenticated = true;
+          return of(true);
+        }),
+        catchError((error: HttpErrorResponse) => {
+          console.error(error.message);
+          return of(false);
+        }),
+      );
   }
 
   register(credentials: {
@@ -115,5 +113,4 @@ export class UserService {
     this.tokensService.deleteToken();
     return of(true);
   }
-
 }

@@ -9,7 +9,12 @@
  */
 
 // System Utils
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import {
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 // Installed Utils
@@ -20,20 +25,24 @@ import { TokensService } from './tokens.service';
 
 // Configuration
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 
 // Logic
 export class HttpInterceptorService implements HttpInterceptor {
-  constructor(
-    private readonly tokensService: TokensService
-  ) {}
-  intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+  constructor(private tokensService: TokensService) {}
+  intercept(
+    req: HttpRequest<unknown>,
+    next: HttpHandler,
+  ): Observable<HttpEvent<unknown>> {
     console.log(this.tokensService.getToken);
     if (this.tokensService.getToken !== '') {
       const modifiedReq = req.clone({
-        headers: req.headers.set('Authorization', 'Token ' + this.tokensService.getToken)
-      })
+        headers: req.headers.set(
+          'Authorization',
+          'Token ' + this.tokensService.getToken,
+        ),
+      });
       return next.handle(modifiedReq);
     }
     return next.handle(req);

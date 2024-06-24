@@ -56,11 +56,11 @@ export class SignupComponent {
 
   // Inject the dependecies
   constructor(
-    private readonly titleService: Title,
-    private readonly translate: TranslateService,
-    private readonly fb: FormBuilder,
-    private readonly router: Router,
-    private readonly userService: UserService,
+    private titleService: Title,
+    private translate: TranslateService,
+    private fb: FormBuilder,
+    private router: Router,
+    private userService: UserService,
   ) {
     // Set Page Title
     this.translate.get('sign_up').subscribe((pageTitle: string) => {
@@ -70,7 +70,14 @@ export class SignupComponent {
     // Create the form representation
     this.userForm = this.fb.group({
       email: ['', Validators.compose([Validators.required, Validators.email])],
-      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(20),
+        ],
+      ],
     });
   }
 

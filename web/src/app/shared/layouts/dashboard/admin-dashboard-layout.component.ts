@@ -62,10 +62,10 @@ export class AdminDashboardLayoutComponent {
   dropdownItems!: Array<UiDropdown>;
 
   constructor(
-    private readonly sanitizer: DomSanitizer,
-    private readonly translateService: TranslateService,
-    private readonly sidebarStatusService: SidebarStatusService,
-    private readonly notificationsDirective: NotificationsDirective,
+    private sanitizer: DomSanitizer,
+    private translateService: TranslateService,
+    private sidebarStatusService: SidebarStatusService,
+    private notificationsDirective: NotificationsDirective,
   ) {
     // Get the current sidebar
     this.sidebarStatus = this.sidebarStatusService.sidebarStatus;

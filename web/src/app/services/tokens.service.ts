@@ -16,14 +16,12 @@ import { CookieService } from 'ngx-cookie-service';
 
 // Configuration
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 
 // Login
 export class TokensService {
-  constructor (
-    private readonly cookieService: CookieService
-  ) {}
+  constructor(private cookieService: CookieService) {}
 
   // Accessors
 
@@ -34,11 +32,15 @@ export class TokensService {
   // Other methods
 
   saveToken(token: string): void {
-    this.cookieService.set('jwt', token, { path: '/', expires: 14, secure: true, sameSite: 'Strict' })
+    this.cookieService.set('jwt', token, {
+      path: '/',
+      expires: 14,
+      secure: true,
+      sameSite: 'Strict',
+    });
   }
 
   deleteToken(): void {
     this.cookieService.delete('jwt', '/');
   }
-
 }

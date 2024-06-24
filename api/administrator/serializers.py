@@ -78,7 +78,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
 class UsersListSerializer(serializers.ModelSerializer):
     """
     The goal of this class is to
-    specify the user fields
+    specify the user fields for lists
     """
     class Meta:
         model = CustomUser

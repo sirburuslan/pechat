@@ -5,7 +5,7 @@ import {
   EnvironmentInjector,
   Injectable,
   TemplateRef,
-  ViewContainerRef
+  ViewContainerRef,
 } from '@angular/core';
 
 // App Utils
@@ -14,7 +14,7 @@ import Modal from '../shared/models/modal.model';
 
 // Configuration
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 
 // Logic
@@ -23,17 +23,16 @@ export class ModalService {
   options: Modal | undefined;
 
   constructor(
-    private readonly applicationRef: ApplicationRef,
-    private readonly injector: EnvironmentInjector
+    private applicationRef: ApplicationRef,
+    private injector: EnvironmentInjector,
   ) {}
 
   // Method to open the modal
   showModal(
     newMemberTemplate: ViewContainerRef,
     modalView: TemplateRef<Element>,
-    options: Modal
+    options: Modal,
   ): void {
-
     // Clear previous views
     newMemberTemplate.clear();
 
@@ -51,15 +50,11 @@ export class ModalService {
 
     // Open modal
     this.newModalComponent.instance.openModal();
-
   }
 
   // Method to close the modal
   closeModal(): void {
-
     // Destroy the modal
     this.newModalComponent.instance.removeModal();
-
   }
-
 }

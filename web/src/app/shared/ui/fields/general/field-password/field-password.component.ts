@@ -1,12 +1,6 @@
 // System Utils
-import {
-  Component,
-  Input
-} from '@angular/core';
-import {
-  FormControl,
-  ReactiveFormsModule
-} from '@angular/forms';
+import { Component, Input } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 // App Utils
 import { UtilsService } from '../../../../../services/utils.service';
@@ -15,10 +9,8 @@ import { UtilsService } from '../../../../../services/utils.service';
 @Component({
   selector: 'app-field-password',
   standalone: true,
-  imports: [
-    ReactiveFormsModule
-  ],
-  templateUrl: './field-password.component.html'
+  imports: [ReactiveFormsModule],
+  templateUrl: './field-password.component.html',
 })
 
 // Logic
@@ -30,11 +22,8 @@ export class FieldPasswordComponent {
   @Input() placeholder!: string;
   @Input() control!: FormControl;
 
-  constructor(
-    private readonly utilsService: UtilsService
-  ) {
+  constructor(private utilsService: UtilsService) {
     // Generate unique id
     this.uniqueId = this.utilsService.uniqueId();
   }
-
 }

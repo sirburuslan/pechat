@@ -4,7 +4,7 @@ import {
   Component,
   ElementRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -16,10 +16,7 @@ import { IconComponent } from '../../shared/general/icon/icon.component';
 @Component({
   selector: 'app-modal',
   standalone: true,
-  imports: [
-    CommonModule,
-    IconComponent
-  ],
+  imports: [CommonModule, IconComponent],
   templateUrl: './modal.component.html',
   styleUrl: '../../../assets/styles/admin/_main.scss',
   encapsulation: ViewEncapsulation.None,
@@ -32,16 +29,14 @@ export class ModalComponent implements AfterViewInit {
   modalSize: string = 'pc-modal-md';
 
   constructor(
-    private readonly modalService: ModalService,
-    private readonly elementRef: ElementRef
+    private modalService: ModalService,
+    private elementRef: ElementRef,
   ) {}
 
   ngAfterViewInit(): void {
-
-    if ( typeof this.modalService.options !== 'undefined' ) {
+    if (typeof this.modalService.options !== 'undefined') {
       this.modalSize = this.modalService.options.size;
     }
-
   }
 
   closeModal() {
@@ -57,7 +52,6 @@ export class ModalComponent implements AfterViewInit {
   }
 
   removeModal() {
-
     this.modalStatus = 'pc-modal-hide';
 
     setTimeout(() => {
@@ -65,7 +59,5 @@ export class ModalComponent implements AfterViewInit {
       this.elementRef.nativeElement.remove();
       this.modalService.newModalComponent?.destroy();
     }, 200);
-
   }
-
 }

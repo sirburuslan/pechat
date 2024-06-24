@@ -17,7 +17,7 @@ from django.views.decorators.debug import sensitive_post_parameters
 # Installed Utils
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.generics import CreateAPIView, ListAPIView, DestroyAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, DestroyAPIView
 from rest_framework.response import Response
 
 # App Utils
@@ -166,6 +166,58 @@ class UsersListView(ListAPIView):
             },
             status=status.HTTP_200_OK
         ) 
+
+class UserInfoView(RetrieveAPIView):
+    """
+    This class get user's info
+    """
+    # Serializer to sanitize the get parameters
+    serializer_class = None
+
+    # Query set is none
+    queryset = CustomUser.objects.all()
+
+    # Access Only With Tokken
+    authentication_classes = [TokenAuthentication]
+
+    # Permission classes
+    permission_classes = [IsAdministrator]
+
+    def get(self, request, *args, **kwargs):
+
+        # Get the user id
+        pk = kwargs.get('pk')
+
+        try:
+
+            # Get the user data
+            user_data = CustomUser.objects.get(pk=pk)
+            
+            # Return success message
+            return Response(
+                {
+                    "success": True,
+                    "content": {
+                        "userId": user_data.pk,
+                        "first_name": user_data.first_name,
+                        "last_name": user_data.last_name,
+                        "role": user_data.role,
+                        "email": user_data.email
+                    }
+                },
+                status=status.HTTP_200_OK
+            )
+
+        except CustomUser.DoesNotExist:
+
+            # Return error message
+            return Response(
+                {
+                    "success": False,
+                    "message": _('The member was not found.')
+                },
+                status=status.HTTP_200_OK
+            )
 
 @method_decorator(require_DELETE, name='dispatch')
 class DeleteUserView(DestroyAPIView):

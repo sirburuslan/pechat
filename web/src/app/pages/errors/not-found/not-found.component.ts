@@ -1,8 +1,5 @@
 // System Utils
-import {
-  Component,
-  ViewEncapsulation
-} from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
 // Installed Utils
@@ -15,10 +12,7 @@ import { IconComponent } from '../../../shared/general/icon/icon.component';
 @Component({
   selector: 'app-not-found',
   standalone: true,
-  imports: [
-    TranslateModule,
-    IconComponent
-  ],
+  imports: [TranslateModule, IconComponent],
   templateUrl: './not-found.component.html',
   styleUrl: '../../../../assets/styles/errors/_main.scss',
   encapsulation: ViewEncapsulation.None,
@@ -27,11 +21,13 @@ import { IconComponent } from '../../../shared/general/icon/icon.component';
 // Logic
 export class NotFoundComponent {
   constructor(
-    private readonly title: Title,
-    private readonly translateService: TranslateService
+    private title: Title,
+    private translateService: TranslateService,
   ) {
-    this.translateService.get('page_not_found').subscribe((pageTitle: string) => {
-      this.title.setTitle(pageTitle)
-    });
+    this.translateService
+      .get('page_not_found')
+      .subscribe((pageTitle: string) => {
+        this.title.setTitle(pageTitle);
+      });
   }
 }

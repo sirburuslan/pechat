@@ -11,6 +11,7 @@ export interface CreateUser extends BaseUser {
 export interface User extends CreateUser {
   id: number;
   role: number;
+  phone: string;
   date_joined: string;
   token: string;
   sidebar: boolean;

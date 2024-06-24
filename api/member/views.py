@@ -135,7 +135,7 @@ class MemberReadView(APIView):
                 {
                     "success": True,
                     "content": {
-                        "memberId": user_data.pk,
+                        "userId": user_data.pk,
                         "firstName": user_data.first_name,
                         "last_name": user_data.last_name,
                         "role": user_data.role,

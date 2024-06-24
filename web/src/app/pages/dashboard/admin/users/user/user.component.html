@@ -75,7 +75,7 @@
         <div class="flex">
           <div class="w-full">
             <ul class="pc-options">
-              <app-field-select [dropdownButton]="'role' | translate" [dropdownItems]="[
+              <app-field-select [dropdownButton]="selectedRole" [dropdownItems]="[
                   {
                     type: 'callback',
                     text: 'administrator' | translate,
@@ -87,7 +87,6 @@
                     callback: 1
                   }
                 ]" [control]="roleControl">
-                {{ 'role' | translate }}
               </app-field-select>
             </ul>
           </div>

@@ -329,5 +329,9 @@
   "save_user": "Save Member",
   "first_name_is_short": "The first name is too short.",
   "delete_user": "Delete Member",
-  "user_id_not_valid": "The member's id is not valid."
+  "user_id_not_valid": "The member's id is not valid.",
+  "first_name_incorrect_length": "The first name should have between 1 and 50 characters.",
+  "last_name_incorrect_length": "The last name should have between 1 and 50 characters.",
+  "phone_number_too_long": "The phone number should have maximum 50 characters.",
+  "role_incorrect_value": "The role value has incorrect value."
 }

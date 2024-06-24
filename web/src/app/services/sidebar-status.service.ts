@@ -11,19 +11,16 @@ import { environment } from '../../environment';
 
 // Configuration
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 
 // Logic
 export class SidebarStatusService {
-
   // Sidebar status container
   public sidebarStatus: boolean = false;
 
   // Inject the services
-  constructor(
-    private readonly httpClient: HttpClient
-  ) { }
+  constructor(private httpClient: HttpClient) {}
 
   // Accessors
 
@@ -33,10 +30,14 @@ export class SidebarStatusService {
 
   // Other Methods
   changeStatus(params: unknown): Observable<ApiResponse<null>> {
-    return this.httpClient.put<ApiResponse<null>>(environment.apiUrl + 'api/v1.0/member/update', params)
-    .pipe(tap(({ success }) => {
-      this.changeSidebarStatus(success);
-    }));
+    return this.httpClient
+      .put<
+        ApiResponse<null>
+      >(environment.apiUrl + 'api/v1.0/member/update', params)
+      .pipe(
+        tap(({ success }) => {
+          this.changeSidebarStatus(success);
+        }),
+      );
   }
-
 }

@@ -9,71 +9,78 @@ import {
   catchError,
   distinctUntilChanged,
   take,
-  tap
+  tap,
 } from 'rxjs';
 
 // App Utils
-import type {
-  CreateUser,
-  User
-} from '../shared/models/user.model';
+import type { CreateUser, User } from '../shared/models/user.model';
 import type ApiResponse from '../shared/models/api-response.model';
 import List from '../shared/models/list.model';
 import { environment } from '../../environment';
 
 // Configuration
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 
 // Logic
 export class UsersService {
   private usersListSubject = new BehaviorSubject<List<User[]> | null>(null);
   public usersList = this.usersListSubject
-  .asObservable()
-  .pipe(distinctUntilChanged())
+    .asObservable()
+    .pipe(distinctUntilChanged());
 
-  constructor(
-    private readonly httpClient: HttpClient
-  ) {}
+  constructor(private httpClient: HttpClient) {}
 
   // Other methods
   createUser(user: CreateUser): Observable<ApiResponse<null>> {
-
     // Try to save the user
-    return this.httpClient.post<ApiResponse<null>>(environment.apiUrl + 'api/v1.0/admin/users/create', user);
-
+    return this.httpClient.post<ApiResponse<null>>(
+      environment.apiUrl + 'api/v1.0/admin/users/create',
+      user,
+    );
   }
 
   getUsers(page: number, search: string = '') {
-    search = search?encodeURIComponent(search):'';
+    search = search ? encodeURIComponent(search) : '';
     // Get the users list
-    this.httpClient.get<List<User[]>>(environment.apiUrl + `api/v1.0/admin/users/list?page=${page}&search=${search}`)
-    .pipe(
-      tap(response => {
-        this.updateUsersList(response)
-      }),
-      take(1),
-      catchError(async (error) => this.handleErrors(error))
-    )
-    .subscribe();
+    this.httpClient
+      .get<List<User[]>>(
+        environment.apiUrl +
+          `api/v1.0/admin/users/list?page=${page}&search=${search}`,
+      )
+      .pipe(
+        tap((response) => {
+          this.updateUsersList(response);
+        }),
+        take(1),
+        catchError(async (error) => this.handleErrors(error)),
+      )
+      .subscribe();
+  }
 
+  getUserById(id: number) {
+    // Get the user's data
+    return this.httpClient.get<ApiResponse<User>>(
+      environment.apiUrl + `api/v1.0/admin/users/${id}/info`,
+    );
   }
 
   deleteUser(id: number) {
     // Try to delete the user
-    return this.httpClient.delete<ApiResponse<null>>(environment.apiUrl +  `api/v1.0/admin/users/${id}/delete`);
+    return this.httpClient.delete<ApiResponse<null>>(
+      environment.apiUrl + `api/v1.0/admin/users/${id}/delete`,
+    );
   }
 
   // Private methods
 
   private updateUsersList(response: List<User[]>) {
-    this.usersListSubject.next(response.items?response:null);
+    this.usersListSubject.next(response.items ? response : null);
   }
 
   private handleErrors(error: unknown) {
     console.error('Error occurred:', error);
     this.usersListSubject.next(null);
   }
-
 }

@@ -8,11 +8,7 @@ import {
   ViewContainerRef,
   CUSTOM_ELEMENTS_SCHEMA,
 } from '@angular/core';
-import {
-  Title,
-  SafeHtml,
-  DomSanitizer
-} from '@angular/platform-browser';
+import { Title, SafeHtml, DomSanitizer } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -26,23 +22,13 @@ import {
   state,
   style,
   transition,
-  trigger
+  trigger,
 } from '@angular/animations';
-import {
-  RouterLink
-} from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 // Installed Utils
-import {
-  TranslateModule,
-  TranslateService
-} from '@ngx-translate/core';
-import {
-  Subscription,
-  take,
-  debounceTime,
-  tap
-} from 'rxjs';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Subscription, take, debounceTime, tap } from 'rxjs';
 
 // App Utils
 import type ApiResponse from '../../../../shared/models/api-response.model';
@@ -68,20 +54,24 @@ import { NotificationsDirective } from '../../../../shared/directives/notificati
     DropdownComponent,
     IconComponent,
     NavigationComponent,
-    RouterLink
+    RouterLink,
   ],
   templateUrl: './users.component.html',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   animations: [
     trigger('iconAnimation', [
       state('hidden', style({ opacity: 0 })),
-      state('visible', style({opacity: 1 })),
-      state('rotating', style({ opacity: 1, animation: '2s pc-rotate-icon-animation-next infinite linear'})),
-      transition('hidden => visible', [
-        animate('0.5s')
-      ])
-    ])
-  ]
+      state('visible', style({ opacity: 1 })),
+      state(
+        'rotating',
+        style({
+          opacity: 1,
+          animation: '2s pc-rotate-icon-animation-next infinite linear',
+        }),
+      ),
+      transition('hidden => visible', [animate('0.5s')]),
+    ]),
+  ],
 })
 
 // Logic
@@ -131,14 +121,14 @@ export class UsersComponent implements OnInit, OnDestroy {
   isSubmitting = false;
 
   constructor(
-    private readonly title: Title,
-    private readonly fb: FormBuilder,
-    private readonly translateService: TranslateService,
-    private readonly modalService: ModalService,
-    private readonly usersService: UsersService,
-    private readonly utilsService: UtilsService,
-    private readonly notificationsDirective: NotificationsDirective,
-    private readonly sanitizer: DomSanitizer,
+    private title: Title,
+    private fb: FormBuilder,
+    private translateService: TranslateService,
+    private modalService: ModalService,
+    private usersService: UsersService,
+    private utilsService: UtilsService,
+    private notificationsDirective: NotificationsDirective,
+    private sanitizer: DomSanitizer,
   ) {
     // Set Page Title
     this.translateService.get('users').subscribe((pageTitle: string) => {
@@ -188,25 +178,24 @@ export class UsersComponent implements OnInit, OnDestroy {
   // Callbacks
 
   ngOnInit(): void {
-
     // Get the users list after component initialization
     this.usersService.getUsers(1, this.searchControl.value);
 
     // Detect search changes
-    this.searchControl.valueChanges.pipe(
-      tap(() => {
-        this.users.searchClass = this.searchControl.value?'active':'';
-      }),
-      debounceTime(1000)
-    ).subscribe(searchTerm => {
+    this.searchControl.valueChanges
+      .pipe(
+        tap(() => {
+          this.users.searchClass = this.searchControl.value ? 'active' : '';
+        }),
+        debounceTime(1000),
+      )
+      .subscribe((searchTerm) => {
+        // Prepare the search variables
+        this.users.page = 1;
 
-      // Prepare the search variables
-      this.users.page = 1;
-
-      // Schedule a search
-      this.usersService.getUsers(this.users.page, searchTerm);
-
-    });
+        // Schedule a search
+        this.usersService.getUsers(this.users.page, searchTerm);
+      });
   }
 
   ngOnDestroy(): void {
@@ -263,7 +252,10 @@ export class UsersComponent implements OnInit, OnDestroy {
               data.message,
             );
             this.newUserForm.reset();
-            this.usersService.getUsers(this.users.page, this.searchControl.value);
+            this.usersService.getUsers(
+              this.users.page,
+              this.searchControl.value,
+            );
           } else {
             this.notificationsDirective.showNotification('error', data.message);
           }
@@ -273,7 +265,7 @@ export class UsersComponent implements OnInit, OnDestroy {
         },
         complete: () => {
           this.isSubmitting = false;
-        }
+        },
       });
     } else {
       // Check if errors exists for first name
@@ -348,47 +340,44 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   exportUsers() {
-
     this.usersListSubscription = this.usersService.usersList.subscribe(
       (response) => {
-
         // Verify if the response is successfully
-        if ( response && response.items && response.items.length !== 0 ) {
-
+        if (response && response.items && response.items.length !== 0) {
           // Set the list
           let list: [string[]] | null = null;
 
           // Append to list
-          list = [[
-            '"' + this.translateService.instant('user_id') + '"',
-            '"' + this.translateService.instant('first_name') + '"',
-            '"' + this.translateService.instant('last_name') + '"',
-            '"' + this.translateService.instant('email') + '"'
-          ]];
+          list = [
+            [
+              '"' + this.translateService.instant('user_id') + '"',
+              '"' + this.translateService.instant('first_name') + '"',
+              '"' + this.translateService.instant('last_name') + '"',
+              '"' + this.translateService.instant('email') + '"',
+            ],
+          ];
 
           // Total number of users
           const usersTotal: number = response.items.length;
 
           // List all numbers
-          for ( let i = 0; i < usersTotal; i++ ) {
-
-              // Append to list
-              list.push([
-                '"' + response.items[i].id + '"',
-                '"' + response.items[i].first_name + '"',
-                '"' + response.items[i].last_name + '"',
-                '"' + response.items[i].email + '"'
-              ]);
-
+          for (let i = 0; i < usersTotal; i++) {
+            // Append to list
+            list.push([
+              '"' + response.items[i].id + '"',
+              '"' + response.items[i].first_name + '"',
+              '"' + response.items[i].last_name + '"',
+              '"' + response.items[i].email + '"',
+            ]);
           }
 
           // CSV variable
           let csv: string = '';
 
           // Prepare the csv
-          list!.forEach(function(row) {
-              csv += row.join(',');
-              csv += "\n";
+          list!.forEach(function (row) {
+            csv += row.join(',');
+            csv += '\n';
           });
 
           // Create the CSV link and download the file
@@ -405,21 +394,15 @@ export class UsersComponent implements OnInit, OnDestroy {
 
           // Download the CSV
           csv_link.click();
-
         } else {
-
           // Show error
           this.notificationsDirective.showNotification(
             'error',
-            this.translateService.instant('no_users_were_found')
+            this.translateService.instant('no_users_were_found'),
           );
-
         }
-
-      }
-
+      },
     );
-
   }
 
   deleteConfirmation(userId: string | number) {

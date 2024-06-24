@@ -12,7 +12,7 @@ This file contains classes which represents the db tables for messages, threads 
 from django.urls import path
 
 # App Utils
-from administrator.views import CreateUserView, UsersListView, DeleteUserView
+from administrator.views import CreateUserView, UsersListView, UserInfoView, DeleteUserView
 
 # Namespace for the administrator app
 app_name = 'administrator'
@@ -20,5 +20,6 @@ app_name = 'administrator'
 urlpatterns = [
     path('users/create', CreateUserView.as_view(), name='create_user'),
     path('users/list', UsersListView.as_view(), name='list_users'),
+    path('users/<int:pk>/info', UserInfoView.as_view(), name='delete_user'),
     path('users/<int:pk>/delete', DeleteUserView.as_view(), name='delete_user'),
 ]

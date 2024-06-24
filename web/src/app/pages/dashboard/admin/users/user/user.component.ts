@@ -1,27 +1,30 @@
 // System Utils
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
-  Validators
+  Validators,
 } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 
 // Installed Utils
-import {
-  TranslateModule,
-  TranslateService
-} from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Subscription, take } from 'rxjs';
 
 // App Utils
+import type ApiResponse from '../../../../../shared/models/api-response.model';
+import type { User } from '../../../../../shared/models/user.model';
+import { UsersService } from '../../../../../services/users.service';
 import { IconComponent } from '../../../../../shared/general/icon/icon.component';
 import { FieldTextComponent } from '../../../../../shared/ui/fields/general/field-text/field-text.component';
 import { FieldEmailComponent } from '../../../../../shared/ui/fields/general/field-email/field-email.component';
 import { FieldPasswordComponent } from '../../../../../shared/ui/fields/general/field-password/field-password.component';
 import { FieldSelectComponent } from '../../../../../shared/ui/fields/general/field-select/field-select.component';
+import { NotificationsDirective } from '../../../../../shared/directives/notifications.directive';
 
 // Configuration
 @Component({
@@ -35,24 +38,32 @@ import { FieldSelectComponent } from '../../../../../shared/ui/fields/general/fi
     FieldTextComponent,
     FieldEmailComponent,
     FieldPasswordComponent,
-    FieldSelectComponent
+    FieldSelectComponent,
   ],
-  templateUrl: './user.component.html'
+  templateUrl: './user.component.html',
 })
 
 // Logic
-export class UserComponent {
-
+export class UserComponent implements OnInit, OnDestroy {
   // Create the form for user data
   userDataForm!: FormGroup;
 
   // Create the form for user password
   userPasswordForm!: FormGroup;
 
+  // Selected role
+  selectedRole!: string;
+
+  // Subscription for role input
+  private roleSubscription!: Subscription;
+
   constructor(
-    private readonly title: Title,
-    private readonly translateService: TranslateService,
-    private readonly fb: FormBuilder,
+    private title: Title,
+    private translateService: TranslateService,
+    private fb: FormBuilder,
+    private activatedRoute: ActivatedRoute,
+    private userService: UsersService,
+    private notificationsDirective: NotificationsDirective
   ) {
     // Set page title
     this.translateService.get('user').subscribe((pageTitle: string) => {
@@ -61,11 +72,27 @@ export class UserComponent {
 
     // Create the form representation
     this.userDataForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      firstName: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(50)
+        ])
+      ],
+      lastName: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(50)
+        ])
+      ],
       email: ['', Validators.compose([Validators.required, Validators.email])],
-      phone: [''],
-      role: ['', Validators.required]
+      phone: ['', Validators.maxLength(50)],
+      role: [
+        '', Validators.required
+      ]
     });
 
     // Create the form representation
@@ -88,6 +115,46 @@ export class UserComponent {
       ],
     });
 
+  }
+
+  ngOnInit(): void {
+
+    // Get the user's id
+    const id = this.activatedRoute.snapshot.params['id'];
+
+    // Get the user's info
+    const userInfo = this.userService.getUserById(id);
+
+    // Process the user info
+    userInfo.pipe(take(1)).subscribe({
+      next: (data: ApiResponse<User>) => {
+        // Check for success response
+        if (data.success) {
+          // Set User Data
+          this.userDataForm.get('firstName')?.setValue(data.content?.first_name);
+          this.userDataForm.get('lastName')?.setValue(data.content?.last_name);
+          this.userDataForm.get('email')?.setValue(data.content?.email);
+          this.userDataForm.get('phone')?.setValue(data.content?.phone);
+          this.userDataForm.get('role')?.setValue(data.content?.role);
+          this.selectedRole = data.content?.role?this.translateService.instant('user'):this.translateService.instant('administrator');
+        }
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+
+    // Monitor changes for role input
+    this.roleSubscription = this.userDataForm.get('role')!.valueChanges.subscribe(value => {
+      this.selectedRole = value?this.translateService.instant('user'):this.translateService.instant('administrator');
+    });
+
+  }
+
+  ngOnDestroy(): void {
+    if ( this.roleSubscription ) {
+      this.roleSubscription.unsubscribe();
+    }
   }
 
   get firstNameControl() {
@@ -121,42 +188,24 @@ export class UserComponent {
   onSubmitUserData(event: Event) {
     event.preventDefault();
 
-    // Enable the animation
-    /*this.isSubmitting = true;
-
-    // Reset error messages
-    this.errors.firstName = '';
-    this.errors.lastName = '';
-    this.errors.email = '';
-    this.errors.password = '';
-
     // Get the inputs data
-    const firstName = this.newUserForm.get('firstName');
-    const lastName = this.newUserForm.get('lastName');
-    const email = this.newUserForm.get('email');
-    const password = this.newUserForm.get('password');*/
-
+    const firstName = this.userDataForm.get('firstName');
+    const lastName = this.userDataForm.get('lastName');
+    const phone = this.userDataForm.get('phone');
     const role = this.userDataForm.get('role');
-    console.log(role?.value);
+
     // Verify if the received user data is valid
     if (this.userDataForm.valid) {
-      // Create a new user
-      /*const newUserObservable = this.usersService.createUser({
-        first_name: firstName?.value,
-        last_name: lastName?.value,
-        email: email?.value,
-        password: password?.value,
-      });
-
+      console.log('is good');
       // Subscribe to the newUserObservable
-      newUserObservable.pipe(take(1)).subscribe({
+      /*newUserObservable.pipe(take(1)).subscribe({
         next: (data: ApiResponse<null>) => {
           if (data.success) {
             this.notificationsDirective.showNotification(
               'success',
               data.message,
             );
-            this.newUserForm.reset();
+            this.userDataForm.reset();
             this.usersService.getUsers(this.users.page, this.searchControl.value);
           } else {
             this.notificationsDirective.showNotification('error', data.message);
@@ -169,167 +218,41 @@ export class UserComponent {
           this.isSubmitting = false;
         }
       });*/
+
     } else {
+
       // Check if errors exists for first name
-      /*if (firstName && firstName.errors) {
+      if (firstName && firstName.errors) {
         // Set error message
-        this.errors.firstName = this.translateService.instant(
-          'first_name_is_short',
-        );
-      }
-
-      // Check if errors exists for last name
-      if (lastName && lastName.errors) {
+        this.notificationsDirective.showNotification('error', this.translateService.instant(
+          'first_name_incorrect_length',
+        ));
+      } else if (lastName && lastName.errors) {
         // Set error message
-        this.errors.lastName = this.translateService.instant(
-          'first_name_is_short',
-        );
+        this.notificationsDirective.showNotification('error', this.translateService.instant(
+          'last_name_incorrect_length',
+        ));
+      } else if (phone && phone.errors) {
+        // Set error message
+        this.notificationsDirective.showNotification('error', this.translateService.instant(
+          'phone_number_too_long',
+        ));
+      } else if (role && role.errors) {
+        // Set error message
+        this.notificationsDirective.showNotification('error', this.translateService.instant(
+          'role_incorrect_value',
+        ));
       }
-
-      // Check if errors exists for email
-      if (email && email.errors) {
-        // Detect email format error
-        this.errors.email =
-          typeof email.errors['email'] !== 'undefined'
-            ? this.translateService.instant('auth_email_not_valid')
-            : '';
-
-        // Detect required error
-        this.errors.email =
-          typeof email.errors['required'] !== 'undefined'
-            ? this.translateService.instant('auth_email_short')
-            : this.errors.email;
-      }
-
-      // Verify if errors exists for password
-      if (password && password.errors) {
-        // Detect short password
-        this.errors.password =
-          typeof password.errors['minlength'] !== 'undefined'
-            ? this.translateService.instant('auth_password_short')
-            : '';
-
-        // Detect long password
-        this.errors.password =
-          typeof password.errors['maxlength'] !== 'undefined'
-            ? this.translateService.instant('auth_password_long')
-            : '';
-
-        // Detect required error
-        this.errors.password =
-          typeof password.errors['required'] !== 'undefined'
-            ? this.translateService.instant('auth_password_short')
-            : this.errors.password;
-      }*/
     }
   }
 
   onSubmitUserPassword(event: Event) {
     event.preventDefault();
 
-    // Enable the animation
-    /*this.isSubmitting = true;
 
-    // Reset error messages
-    this.errors.firstName = '';
-    this.errors.lastName = '';
-    this.errors.email = '';
-    this.errors.password = '';
-
-    // Get the inputs data
-    const firstName = this.newUserForm.get('firstName');
-    const lastName = this.newUserForm.get('lastName');
-    const email = this.newUserForm.get('email');
-    const password = this.newUserForm.get('password');*/
-    console.log(this.userDataForm.valid);
-    // Verify if the received user data is valid
-    if (this.userDataForm.valid) {
-      // Create a new user
-      /*const newUserObservable = this.usersService.createUser({
-        first_name: firstName?.value,
-        last_name: lastName?.value,
-        email: email?.value,
-        password: password?.value,
-      });
-
-      // Subscribe to the newUserObservable
-      newUserObservable.pipe(take(1)).subscribe({
-        next: (data: ApiResponse<null>) => {
-          if (data.success) {
-            this.notificationsDirective.showNotification(
-              'success',
-              data.message,
-            );
-            this.newUserForm.reset();
-            this.usersService.getUsers(this.users.page, this.searchControl.value);
-          } else {
-            this.notificationsDirective.showNotification('error', data.message);
-          }
-        },
-        error: (err) => {
-          console.log(err);
-        },
-        complete: () => {
-          this.isSubmitting = false;
-        }
-      });*/
-    } else {
-      // Check if errors exists for first name
-      /*if (firstName && firstName.errors) {
-        // Set error message
-        this.errors.firstName = this.translateService.instant(
-          'first_name_is_short',
-        );
-      }
-
-      // Check if errors exists for last name
-      if (lastName && lastName.errors) {
-        // Set error message
-        this.errors.lastName = this.translateService.instant(
-          'first_name_is_short',
-        );
-      }
-
-      // Check if errors exists for email
-      if (email && email.errors) {
-        // Detect email format error
-        this.errors.email =
-          typeof email.errors['email'] !== 'undefined'
-            ? this.translateService.instant('auth_email_not_valid')
-            : '';
-
-        // Detect required error
-        this.errors.email =
-          typeof email.errors['required'] !== 'undefined'
-            ? this.translateService.instant('auth_email_short')
-            : this.errors.email;
-      }
-
-      // Verify if errors exists for password
-      if (password && password.errors) {
-        // Detect short password
-        this.errors.password =
-          typeof password.errors['minlength'] !== 'undefined'
-            ? this.translateService.instant('auth_password_short')
-            : '';
-
-        // Detect long password
-        this.errors.password =
-          typeof password.errors['maxlength'] !== 'undefined'
-            ? this.translateService.instant('auth_password_long')
-            : '';
-
-        // Detect required error
-        this.errors.password =
-          typeof password.errors['required'] !== 'undefined'
-            ? this.translateService.instant('auth_password_short')
-            : this.errors.password;
-      }*/
-    }
   }
 
   translateText(text: string): string {
     return this.translateService.instant(text);
   }
-
 }

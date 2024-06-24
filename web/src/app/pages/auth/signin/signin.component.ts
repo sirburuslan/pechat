@@ -63,11 +63,11 @@ export class SigninComponent implements OnDestroy {
 
   // Inject the dependecies
   constructor(
-    private readonly titleService: Title,
-    private readonly translate: TranslateService,
-    private readonly fb: FormBuilder,
-    private readonly router: Router,
-    private readonly userService: UserService,
+    private titleService: Title,
+    private translate: TranslateService,
+    private fb: FormBuilder,
+    private router: Router,
+    private userService: UserService,
   ) {
     // Set Page Title
     this.translation = this.translate

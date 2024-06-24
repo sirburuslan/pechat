@@ -14,14 +14,13 @@ import { Directive, ElementRef } from '@angular/core';
 // Configuration
 @Directive({
   selector: '[appNotifications]',
-  standalone: true
+  standalone: true,
 })
 
 // Logic
 export class NotificationsDirective {
-
   // Inject services
-  constructor(private readonly elementRef: ElementRef) {}
+  constructor(private elementRef: ElementRef) {}
 
   /**
    * Display notifications
@@ -30,7 +29,6 @@ export class NotificationsDirective {
    * @param text for notification
    */
   public showNotification(type: string, text: string) {
-
     // Create a new div
     const notification = document.createElement('div');
 
@@ -38,7 +36,11 @@ export class NotificationsDirective {
     notification.classList.add('pc-popup-notification');
 
     // Set status
-    notification.classList.add((type === 'success')?'pc-popup-notification-success':'pc-popup-notification-error');
+    notification.classList.add(
+      type === 'success'
+        ? 'pc-popup-notification-success'
+        : 'pc-popup-notification-error',
+    );
 
     // Set notification text
     notification.innerText = text;
@@ -50,7 +52,5 @@ export class NotificationsDirective {
     setTimeout(() => {
       notification.remove();
     }, 2000);
-
   }
-
 }

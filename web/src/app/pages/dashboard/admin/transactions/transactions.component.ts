@@ -13,19 +13,15 @@ import { IconComponent } from '../../../../shared/general/icon/icon.component';
 @Component({
   selector: 'app-transactions',
   standalone: true,
-  imports: [
-    TranslateModule,
-    AdminDashboardLayoutComponent,
-    IconComponent,
-  ],
+  imports: [TranslateModule, AdminDashboardLayoutComponent, IconComponent],
   templateUrl: './transactions.component.html',
 })
 
 // Logic
 export class TransactionsComponent {
   constructor(
-    private readonly title: Title,
-    private readonly translateService: TranslateService,
+    private title: Title,
+    private translateService: TranslateService,
   ) {
     // Set Page Title
     this.translateService.get('transactions').subscribe((pageTitle: string) => {
