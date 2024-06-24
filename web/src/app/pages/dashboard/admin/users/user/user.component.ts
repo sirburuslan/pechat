@@ -18,7 +18,7 @@ import { Subscription, take } from 'rxjs';
 // App Utils
 import type ApiResponse from '../../../../../shared/models/api-response.model';
 import type { User } from '../../../../../shared/models/user.model';
-import { UsersService } from '../../../../../services/users.service';
+import { UserService } from '../../../../../services/user.service';
 import { IconComponent } from '../../../../../shared/general/icon/icon.component';
 import { FieldTextComponent } from '../../../../../shared/ui/fields/general/field-text/field-text.component';
 import { FieldEmailComponent } from '../../../../../shared/ui/fields/general/field-email/field-email.component';
@@ -54,6 +54,9 @@ export class UserComponent implements OnInit, OnDestroy {
   // Selected role
   selectedRole!: string;
 
+  // Submitting status
+  isSubmitting = false;
+
   // Subscription for role input
   private roleSubscription!: Subscription;
 
@@ -62,7 +65,7 @@ export class UserComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     private fb: FormBuilder,
     private activatedRoute: ActivatedRoute,
-    private userService: UsersService,
+    private userService: UserService,
     private notificationsDirective: NotificationsDirective
   ) {
     // Set page title
@@ -157,32 +160,32 @@ export class UserComponent implements OnInit, OnDestroy {
     }
   }
 
-  get firstNameControl() {
+  get firstNameControl(): FormControl {
     return this.userDataForm.get('firstName') as FormControl;
   }
 
-  get lastNameControl() {
+  get lastNameControl(): FormControl {
     return this.userDataForm.get('lastName') as FormControl;
   }
 
-  get emailControl() {
+  get emailControl(): FormControl {
     return this.userDataForm.get('email') as FormControl;
   }
 
-  get phoneControl() {
+  get phoneControl(): FormControl {
     return this.userDataForm.get('phone') as FormControl;
   }
 
-  get roleControl() {
+  get roleControl(): FormControl {
     return this.userDataForm.get('role') as FormControl;
   }
 
-  get passwordControl() {
-    return this.userDataForm.get('password') as FormControl;
+  get passwordControl(): FormControl {
+    return this.userPasswordForm.get('password') as FormControl;
   }
 
-  get repeatPasswordControl() {
-    return this.userDataForm.get('repeatPassword') as FormControl;
+  get repeatPasswordControl(): FormControl {
+    return this.userPasswordForm.get('repeatPassword') as FormControl;
   }
 
   onSubmitUserData(event: Event) {
@@ -196,28 +199,37 @@ export class UserComponent implements OnInit, OnDestroy {
 
     // Verify if the received user data is valid
     if (this.userDataForm.valid) {
-      console.log('is good');
-      // Subscribe to the newUserObservable
-      /*newUserObservable.pipe(take(1)).subscribe({
+
+      // Get the user's id
+      const id = this.activatedRoute.snapshot.params['id'];
+
+      // Update a user
+      const userUpdateObservable = this.userService.updateUser({
+        first_name: firstName!.value,
+        last_name: lastName!.value,
+        phone: phone!.value,
+        role: role!.value
+      }, id);
+
+      // Subscribe to the user update observable
+      userUpdateObservable.pipe(take(1)).subscribe({
         next: (data: ApiResponse<null>) => {
           if (data.success) {
             this.notificationsDirective.showNotification(
               'success',
               data.message,
             );
-            this.userDataForm.reset();
-            this.usersService.getUsers(this.users.page, this.searchControl.value);
           } else {
             this.notificationsDirective.showNotification('error', data.message);
           }
         },
-        error: (err) => {
+        error: (err: unknown) => {
           console.log(err);
         },
         complete: () => {
           this.isSubmitting = false;
         }
-      });*/
+      });
 
     } else {
 
@@ -240,7 +252,7 @@ export class UserComponent implements OnInit, OnDestroy {
       } else if (role && role.errors) {
         // Set error message
         this.notificationsDirective.showNotification('error', this.translateService.instant(
-          'role_incorrect_value',
+          'phone_number_too_long',
         ));
       }
     }
@@ -248,7 +260,6 @@ export class UserComponent implements OnInit, OnDestroy {
 
   onSubmitUserPassword(event: Event) {
     event.preventDefault();
-
 
   }
 

@@ -74,6 +74,22 @@ class CreateUserSerializer(serializers.ModelSerializer):
         user = CustomUser.objects.create_user(**validated_data)
         return user
     
+class UpdateUserSerializer(serializers.ModelSerializer):
+    """
+    The goal of this class
+    is to update the user's data
+    """
+    first_name = serializers.CharField(max_length=200, write_only=True)
+    last_name = serializers.CharField(max_length=200, write_only=True)
+    ROLE_CHOICES = (
+        (0, 'Administrator'),
+        (1, 'User'),
+    )
+    role = serializers.ChoiceField(choices=ROLE_CHOICES)
+
+    class Meta:
+        model = CustomUser
+        fields = ['first_name', 'last_name', 'role']
 
 class UsersListSerializer(serializers.ModelSerializer):
     """

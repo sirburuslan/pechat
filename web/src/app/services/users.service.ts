@@ -36,7 +36,7 @@ export class UsersService {
   createUser(user: CreateUser): Observable<ApiResponse<null>> {
     // Try to save the user
     return this.httpClient.post<ApiResponse<null>>(
-      environment.apiUrl + 'api/v1.0/admin/users/create',
+      environment.apiUrl + `api/v1.0/admin/users/create`,
       user,
     );
   }
@@ -57,13 +57,6 @@ export class UsersService {
         catchError(async (error) => this.handleErrors(error)),
       )
       .subscribe();
-  }
-
-  getUserById(id: number) {
-    // Get the user's data
-    return this.httpClient.get<ApiResponse<User>>(
-      environment.apiUrl + `api/v1.0/admin/users/${id}/info`,
-    );
   }
 
   deleteUser(id: number) {

@@ -1,6 +1,12 @@
 // System Utils
-import { Component, Input } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import {
+  Component,
+  Input
+} from '@angular/core';
+import {
+  FormControl,
+  ReactiveFormsModule
+} from '@angular/forms';
 
 // App Utils
 import { UtilsService } from '../../../../../services/utils.service';
@@ -9,7 +15,9 @@ import { UtilsService } from '../../../../../services/utils.service';
 @Component({
   selector: 'app-field-text',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [
+    ReactiveFormsModule
+  ],
   templateUrl: './field-text.component.html',
 })
 
@@ -26,4 +34,5 @@ export class FieldTextComponent {
     // Generate unique id
     this.uniqueId = this.utilsService.uniqueId();
   }
+
 }

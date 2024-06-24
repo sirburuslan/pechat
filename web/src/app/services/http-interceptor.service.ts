@@ -35,7 +35,7 @@ export class HttpInterceptorService implements HttpInterceptor {
     req: HttpRequest<unknown>,
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
-    console.log(this.tokensService.getToken);
+
     if (this.tokensService.getToken !== '') {
       const modifiedReq = req.clone({
         headers: req.headers.set(

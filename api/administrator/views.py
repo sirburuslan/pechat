@@ -17,14 +17,14 @@ from django.views.decorators.debug import sensitive_post_parameters
 # Installed Utils
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, DestroyAPIView
+from rest_framework.generics import CreateAPIView, UpdateAPIView, ListAPIView, RetrieveAPIView, DestroyAPIView
 from rest_framework.response import Response
 
 # App Utils
 from administrator.filters import UsersFilter
-from administrator.serializers import CreateUserSerializer, UsersListSerializer
+from administrator.serializers import CreateUserSerializer, UpdateUserSerializer, UsersListSerializer
 from authentication.models import CustomUser
-from shared_utils.decorators import require_POST, require_DELETE
+from shared_utils.decorators import require_POST, require_PUT, require_DELETE
 from shared_utils.pagination import DefaultPagination
 from shared_utils.permissions import IsAdministrator
 from shared_utils.serializers import ListQuerySerializer
@@ -104,6 +104,73 @@ class CreateUserView(CreateAPIView):
             status=status.HTTP_201_CREATED
         )
     
+@method_decorator(require_PUT, name='dispatch')
+class UpdateUserView(UpdateAPIView):
+    """
+    This class updates a user
+    from the administrator panel
+    """
+
+    # Serializer class used for user creation
+    serializer_class = UpdateUserSerializer
+
+    # Queryset is none
+    queryset = None
+
+    # Access Only With Tokken
+    authentication_classes = [TokenAuthentication]
+
+    # Permission classes
+    permission_classes = [IsAdministrator]
+
+    @method_decorator(sensitive_post_parameters())
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+
+        # Get the user id
+        pk = kwargs.get('pk')
+
+        # Get the user
+        userObj = CustomUser.objects.get(pk=pk)
+
+        serializer = self.get_serializer(data=request.data, instance=userObj)
+
+        if not serializer.is_valid():
+            error_msg = _('An error has occurred.')
+
+            if 'first_name' in serializer.errors:
+                error_msg = serializer.errors['first_name'][0].capitalize()
+            elif 'last_name' in serializer.errors:
+                error_msg = serializer.errors['last_name'][0].capitalize()
+
+            return Response(
+                {
+                    "success": False,
+                    "message": error_msg
+                },
+                status=status.HTTP_200_OK
+            )
+
+        try:
+            serializer.save()
+        except Exception as e:
+            return Response(
+                {
+                    "success": False,
+                    "message": str(e)
+                },
+                status=status.HTTP_200_OK
+            )
+
+        return Response(
+            {
+                "success": True,
+                "message": _('The member was updated successfully.')
+            },
+            status=status.HTTP_200_OK
+        )
 
 class UsersListView(ListAPIView):
     """

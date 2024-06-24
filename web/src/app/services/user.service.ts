@@ -16,7 +16,7 @@ import {
 // App Utils
 import { environment } from '../../environment';
 import type ApiResponse from '../shared/models/api-response.model';
-import type { User } from '../shared/models/user.model';
+import type { CreateUser, UpdateUser, User } from '../shared/models/user.model';
 import { TokensService } from './tokens.service';
 import { SidebarStatusService } from './sidebar-status.service';
 
@@ -52,9 +52,39 @@ export class UserService {
   }
 
   // Other Methods
+
+  register(credentials: {
+    email: string;
+    password: string;
+  }): Observable<{ success: boolean; message: string }> {
+    return this.httpClient.post<{ success: boolean; message: string }>(
+      environment.apiUrl + `api/v1.0/auth/registration`,
+      {
+        email: credentials.email,
+        password: credentials.password,
+      },
+    );
+  }
+
+  createUser(user: CreateUser): Observable<ApiResponse<null>> {
+    // Try to save the user
+    return this.httpClient.post<ApiResponse<null>>(
+      environment.apiUrl + `api/v1.0/admin/users/create`,
+      user,
+    );
+  }
+
+  updateUser(user: UpdateUser, id: number): Observable<ApiResponse<null>> {
+    // Try to save the user
+    return this.httpClient.put<ApiResponse<null>>(
+      environment.apiUrl + `api/v1.0/admin/users/${id}/update`,
+      user,
+    );
+  }
+
   getUser(): Observable<boolean> {
     return this.httpClient
-      .post(environment.apiUrl + 'api/v1.0/member/settings', {})
+      .post(environment.apiUrl + `api/v1.0/member/settings`, {})
       .pipe(
         switchMap((response: unknown) => {
           const res = response as ApiResponse<User>;
@@ -72,16 +102,10 @@ export class UserService {
       );
   }
 
-  register(credentials: {
-    email: string;
-    password: string;
-  }): Observable<{ success: boolean; message: string }> {
-    return this.httpClient.post<{ success: boolean; message: string }>(
-      environment.apiUrl + 'api/v1.0/auth/registration',
-      {
-        email: credentials.email,
-        password: credentials.password,
-      },
+  getUserById(id: number) {
+    // Get the user's data
+    return this.httpClient.get<ApiResponse<User>>(
+      environment.apiUrl + `api/v1.0/admin/users/${id}/info`,
     );
   }
 
@@ -98,7 +122,7 @@ export class UserService {
   }): Observable<{ success: boolean; message: string; user?: User }> {
     return this.httpClient
       .post<{ success: boolean; message: string }>(
-        environment.apiUrl + 'api/v1.0/auth/signin',
+        environment.apiUrl + `api/v1.0/auth/signin`,
         {
           email: credentials.email,
           password: credentials.password,

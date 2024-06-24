@@ -8,6 +8,13 @@ export interface CreateUser extends BaseUser {
   last_name: string;
 }
 
+export interface UpdateUser {
+  first_name: string;
+  last_name: string;
+  role: number;
+  phone: string;
+}
+
 export interface User extends CreateUser {
   id: number;
   role: number;

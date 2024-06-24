@@ -70,6 +70,7 @@ describe('UsersService', () => {
         password: '12345678',
         date_joined: '',
         token: '',
+        phone: '',
         sidebar: false
       }],
       page: 1,
