@@ -16,7 +16,7 @@ import {
 // App Utils
 import { environment } from '../../environment';
 import type ApiResponse from '../shared/models/api-response.model';
-import type { CreateUser, UpdateUser, User } from '../shared/models/user.model';
+import type { CreateUser, UpdateUser, User, UserPassword } from '../shared/models/user.model';
 import { TokensService } from './tokens.service';
 import { SidebarStatusService } from './sidebar-status.service';
 
@@ -78,6 +78,14 @@ export class UserService {
     // Try to save the user
     return this.httpClient.put<ApiResponse<null>>(
       environment.apiUrl + `api/v1.0/admin/users/${id}/update`,
+      user,
+    );
+  }
+
+  updateUserPassword(user: UserPassword, id: number): Observable<ApiResponse<null>> {
+    // Try to update the user's password
+    return this.httpClient.put<ApiResponse<null>>(
+      environment.apiUrl + `api/v1.0/admin/users/${id}/update-password`,
       user,
     );
   }

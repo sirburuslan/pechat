@@ -28,6 +28,7 @@ export class FieldTextComponent {
 
   // Input fields
   @Input() placeholder!: string;
+  @Input() disabled!: boolean;
   @Input() control!: FormControl;
 
   constructor(private utilsService: UtilsService) {

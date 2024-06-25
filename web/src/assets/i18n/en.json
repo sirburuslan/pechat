@@ -333,5 +333,7 @@
   "first_name_incorrect_length": "The first name should have between 1 and 50 characters.",
   "last_name_incorrect_length": "The last name should have between 1 and 50 characters.",
   "phone_number_too_long": "The phone number should have maximum 50 characters.",
-  "role_incorrect_value": "The role value has incorrect value."
+  "role_incorrect_value": "The role value has incorrect value.",
+  "password_incorrect_length": "The password should have between 8 and 20 characters.",
+  "repeat_password_doesnt_match": "Repeat password doesn't match new password."
 }

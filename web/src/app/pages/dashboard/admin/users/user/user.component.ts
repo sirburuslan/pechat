@@ -261,6 +261,66 @@ export class UserComponent implements OnInit, OnDestroy {
   onSubmitUserPassword(event: Event) {
     event.preventDefault();
 
+    // Get the inputs data
+    const password = this.userPasswordForm.get('password');
+    const repeatPassword = this.userPasswordForm.get('repeatPassword');
+
+    // Verify if the received user data is valid
+    if ( this.userPasswordForm.valid ) {
+
+      // Get the user's id
+      const id = this.activatedRoute.snapshot.params['id'];
+
+      // Verify if password match
+      if ( password?.value != repeatPassword?.value ) {
+        // Set error message
+        this.notificationsDirective.showNotification('error', this.translateService.instant(
+          'repeat_password_doesnt_match',
+        ));
+      } else {
+
+        // Update a user's password
+        const userUpdateObservable = this.userService.updateUserPassword({
+          password: password?.value
+        }, id);
+
+        // Subscribe to the user update observable
+        userUpdateObservable.pipe(take(1)).subscribe({
+          next: (data: ApiResponse<null>) => {
+            if (data.success) {
+              this.notificationsDirective.showNotification(
+                'success',
+                data.message,
+              );
+            } else {
+              this.notificationsDirective.showNotification('error', data.message);
+            }
+          },
+          error: (err: unknown) => {
+            console.log(err);
+          }
+
+        });
+
+      }
+
+    } else {
+
+      // Check if errors exists for password
+      if (password && password.errors) {
+        // Set error message
+        this.notificationsDirective.showNotification('error', this.translateService.instant(
+          'password_incorrect_length',
+        ));
+      } else if (repeatPassword && repeatPassword.errors) {
+        // Set error message
+        this.notificationsDirective.showNotification('error', this.translateService.instant(
+          'repeat_password_doesnt_match',
+        ));
+      }
+
+    }
+
   }
 
   translateText(text: string): string {

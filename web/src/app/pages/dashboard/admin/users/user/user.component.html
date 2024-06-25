@@ -52,16 +52,16 @@
         <div class="flex">
           <div class="w-full">
             <ul class="pc-options">
-              <app-field-text [placeholder]="'enter_first_name' | translate" [control]="firstNameControl">
+              <app-field-text [placeholder]="'enter_first_name' | translate" [disabled]="false" [control]="firstNameControl">
                 {{ 'first_name' | translate }}
               </app-field-text>
-              <app-field-text [placeholder]="'enter_last_name' | translate" [control]="lastNameControl">
+              <app-field-text [placeholder]="'enter_last_name' | translate" [disabled]="false" [control]="lastNameControl">
                 {{ 'last_name' | translate }}
               </app-field-text>
-              <app-field-email [placeholder]="'enter_email_address' | translate" [control]="emailControl">
+              <app-field-email [placeholder]="'enter_email_address' | translate" [disabled]="true" [control]="emailControl">
                 {{ 'email' | translate }}
               </app-field-email>
-              <app-field-text [placeholder]="'enter_the_phone_number' | translate" [control]="phoneControl">
+              <app-field-text [placeholder]="'enter_the_phone_number' | translate" [disabled]="false" [control]="phoneControl">
                 {{ 'phone' | translate }}
               </app-field-text>
             </ul>

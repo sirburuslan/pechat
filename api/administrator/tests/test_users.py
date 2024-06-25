@@ -160,6 +160,80 @@ class CreateUserViewTest(APITestCase):
         # Verify if the returned message is correct
         self.assertEqual(response.data['message'], 'The password cannot contain spaces.')
 
+class UpdateUserView(APITestCase):
+    """
+    This class to test the user
+    update from the administrator panel
+    """
+    def setUp(self) -> None:
+
+        # Api Client to simulate http requests
+        self.client = APIClient()
+
+        # Create an admin user
+        self.admin_user = CustomUser.objects.create_user(
+            email='testadmin@example.com', password='adminpassword', is_staff=True
+        )
+
+        # Create the admin token
+        self.admin_token = Token.objects.create(user=self.admin_user)
+
+        # Set the administrator token
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.admin_token.key)   
+
+    def test_update_user_success(self):
+
+        # Get the last created user
+        last_user: CustomUser = CustomUser.objects.last()
+
+        # Define the URL for the UpdateUserView
+        self.url = reverse('administrator:update_user', kwargs={'pk': last_user.pk})
+
+        # Prepare the user's data
+        data: dict[str, str] = {
+            'first_name': 'New',
+            'last_name': 'User',
+            'role': 0
+        }
+        
+        # Send put request to create the user
+        response: HttpResponse = self.client.put(self.url, data)
+
+        # Compare the status code to see if is correct
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Check for success response
+        self.assertTrue(response.data['success'])
+
+        # Verify if the returned message is correct
+        self.assertEqual(response.data['message'], 'The member was updated successfully.')
+
+    def test_update_user_invalid_data(self):
+
+        # Get the last created user
+        last_user: CustomUser = CustomUser.objects.last()
+
+        # Define the URL for the UpdateUserView
+        self.url = reverse('administrator:update_user', kwargs={'pk': last_user.pk})
+
+        # Prepare the user's data
+        data: dict[str, str] = {
+            'first_name': 'New',
+            'last_name': 'User',
+            'role': 2
+        }
+        
+        # Send put request to create the user
+        response: HttpResponse = self.client.put(self.url, data)
+
+        # Compare the status code to see if is correct
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Check for success response
+        self.assertFalse(response.data['success'])
+
+        # Verify if the returned message is correct
+        self.assertEqual(response.data['message'], 'Role: "2" is not a valid choice.')
 
 class UserListViewTest(APITestCase):
     """

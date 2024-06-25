@@ -9,7 +9,6 @@ This file contains classes for handling and generating responses for the adminis
 """
 
 # Installed Utils
-from django.contrib.auth import get_user_model
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.debug import sensitive_post_parameters
@@ -22,7 +21,7 @@ from rest_framework.response import Response
 
 # App Utils
 from administrator.filters import UsersFilter
-from administrator.serializers import CreateUserSerializer, UpdateUserSerializer, UsersListSerializer
+from administrator.serializers import CreateUserSerializer, UpdateUserSerializer, UpdateUserPasswordSerializer, UsersListSerializer
 from authentication.models import CustomUser
 from shared_utils.decorators import require_POST, require_PUT, require_DELETE
 from shared_utils.pagination import DefaultPagination
@@ -111,11 +110,11 @@ class UpdateUserView(UpdateAPIView):
     from the administrator panel
     """
 
-    # Serializer class used for user creation
+    # Serializer class used for user update
     serializer_class = UpdateUserSerializer
 
     # Queryset is none
-    queryset = None
+    queryset = CustomUser.objects.all()
 
     # Access Only With Tokken
     authentication_classes = [TokenAuthentication]
@@ -124,27 +123,35 @@ class UpdateUserView(UpdateAPIView):
     permission_classes = [IsAdministrator]
 
     @method_decorator(sensitive_post_parameters())
-    def dispatch(self, *args, **kwargs):
+    def dispatch(self, *args, **kwargs) -> None:
         return super().dispatch(*args, **kwargs)
 
-    def put(self, request, *args, **kwargs):
+    def put(self, request, *args, **kwargs) -> None:
 
         # Get the user id
-        pk = kwargs.get('pk')
+        pk: int = kwargs.get('pk')
 
         # Get the user
         userObj = CustomUser.objects.get(pk=pk)
 
+        # Serialize data
         serializer = self.get_serializer(data=request.data, instance=userObj)
 
+        # Check if data is valid
         if not serializer.is_valid():
-            error_msg = _('An error has occurred.')
+            
+            # Default error message
+            error_msg: str = _('An error has occurred.')
 
+            # Check if the error is related to a field's value
             if 'first_name' in serializer.errors:
                 error_msg = serializer.errors['first_name'][0].capitalize()
             elif 'last_name' in serializer.errors:
                 error_msg = serializer.errors['last_name'][0].capitalize()
+            elif 'role' in serializer.errors:
+                error_msg = _('Role: ') + serializer.errors['role'][0].capitalize()
 
+            # Return custom message
             return Response(
                 {
                     "success": False,
@@ -168,6 +175,78 @@ class UpdateUserView(UpdateAPIView):
             {
                 "success": True,
                 "message": _('The member was updated successfully.')
+            },
+            status=status.HTTP_200_OK
+        )
+    
+@method_decorator(require_PUT, name='dispatch')
+class UpdateUserPasswordView(UpdateAPIView):
+    """
+    This class updates a user password
+    from the administrator panel
+    """
+
+    # Serializer class used for user password update
+    serializer_class = UpdateUserPasswordSerializer
+
+    # Queryset is none
+    queryset = CustomUser.objects.all()
+
+    # Access Only With Tokken
+    authentication_classes = [TokenAuthentication]
+
+    # Permission classes
+    permission_classes = [IsAdministrator]
+
+    @method_decorator(sensitive_post_parameters())
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+
+        # Get the user id
+        pk = kwargs.get('pk')
+
+        # Get the user
+        userObj = CustomUser.objects.get(pk=pk)
+
+        # Serialize data
+        serializer = self.get_serializer(data=request.data, instance=userObj)
+
+        # Check if data is valid
+        if not serializer.is_valid():
+            
+            # Default error message
+            error_msg = _('An error has occurred.')
+
+            # Check if the error is related to a field's value
+            if 'password' in serializer.errors:
+                error_msg = serializer.errors['password'][0].capitalize()
+
+            # Return custom message
+            return Response(
+                {
+                    "success": False,
+                    "message": error_msg
+                },
+                status=status.HTTP_200_OK
+            )
+
+        try:
+            serializer.save()
+        except Exception as e:
+            return Response(
+                {
+                    "success": False,
+                    "message": str(e)
+                },
+                status=status.HTTP_200_OK
+            )
+
+        return Response(
+            {
+                "success": True,
+                "message": _('The password was saved successfully.')
             },
             status=status.HTTP_200_OK
         )
