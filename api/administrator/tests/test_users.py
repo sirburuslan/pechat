@@ -160,7 +160,7 @@ class CreateUserViewTest(APITestCase):
         # Verify if the returned message is correct
         self.assertEqual(response.data['message'], 'The password cannot contain spaces.')
 
-class UpdateUserView(APITestCase):
+class UpdateUserViewTest(APITestCase):
     """
     This class to test the user
     update from the administrator panel
@@ -234,6 +234,77 @@ class UpdateUserView(APITestCase):
 
         # Verify if the returned message is correct
         self.assertEqual(response.data['message'], 'Role: "2" is not a valid choice.')
+
+class UpdateUserPasswordView(APITestCase):
+    """
+    This class to test the user password
+    update from the administrator panel
+    """
+    def setUp(self) -> None:
+
+        # Api Client to simulate http requests
+        self.client = APIClient()
+
+        # Create an admin user
+        self.admin_user = CustomUser.objects.create_user(
+            email='testadmin@example.com', password='adminpassword', is_staff=True
+        )
+
+        # Create the admin token
+        self.admin_token = Token.objects.create(user=self.admin_user)
+
+        # Set the administrator token
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.admin_token.key)   
+
+    def test_update_user_password_success(self):
+
+        # Get the last created user
+        last_user: CustomUser = CustomUser.objects.last()
+
+        # Define the URL for the UpdateUserPasswordView
+        self.url = reverse('administrator:update_user_password', kwargs={'pk': last_user.pk})
+
+        # Prepare the user's data
+        data: dict[str, str] = {
+            'password': '12345678'
+        }
+        
+        # Send put request to create the user
+        response: HttpResponse = self.client.put(self.url, data)
+
+        # Compare the status code to see if is correct
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Check for success response
+        self.assertTrue(response.data['success'])
+
+        # Verify if the returned message is correct
+        self.assertEqual(response.data['message'], 'The password was saved successfully.')
+
+    def test_update_user_password_invalid_data(self):
+
+        # Get the last created user
+        last_user: CustomUser = CustomUser.objects.last()
+
+        # Define the URL for the UpdateUserPasswordView
+        self.url = reverse('administrator:update_user_password', kwargs={'pk': last_user.pk})
+
+        # Prepare the user's data
+        data: dict[str, str] = {
+            'password': '123456'
+        }
+        
+        # Send put request to create the user
+        response: HttpResponse = self.client.put(self.url, data)
+
+        # Compare the status code to see if is correct
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Check for success response
+        self.assertFalse(response.data['success'])
+
+        # Verify if the returned message is correct
+        self.assertEqual(response.data['message'], 'Ensure this field has at least 8 characters.')
 
 class UserListViewTest(APITestCase):
     """
