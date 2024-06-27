@@ -400,24 +400,17 @@ body {
           background-color: $color-blue-light;
           color: #ffffff;
 
-          & > .pc-load-more-icon,
-          & > .pc-next-icon {
+          .pc-load-more-icon,
+          .pc-next-icon {
             vertical-align: middle;
             margin-top: -5px;
             line-height: 38px;
             font-size: 18px;
           }
 
-          & > .pc-load-more-icon {
-            display: none;
-          }
-
           &.pc-active-button {
-            & > .pc-next-icon {
-              display: none;
-            }
 
-            & > .pc-load-more-icon {
+            .pc-load-more-icon {
               display: inherit;
               animation: 2s pc-rotate-icon-animation-next infinite linear;
             }

@@ -1,7 +1,7 @@
 <div class="pc-member-container">
   <div
     class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-7 gap-1 sm:gap-1 md:gap-6 lg:gap-6 xl:gap-6 mb-3">
-    <div class="pc-profile-photo-area mb-10">
+    <div class="pc-profile-photo-area mb-10" [class.pc-uploading-active]="update.image">
       <div class="flex">
         <div class="w-full">
           <h3 class="pc-section-title">
@@ -12,17 +12,15 @@
       <div class="flex mb-3">
         <div class="w-full">
           <div class="pc-profile-photo pc-profile-photo-green-background flex items-center justify-center">
-            <div class="pc-profile-photo-cover">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
-              </svg>
-            </div>
+            <ng-container *ngIf="userImage; else noImage">
+              <img [src]="userImage" alt="Member Image">
+            </ng-container>
           </div>
         </div>
       </div>
       <div class="flex">
         <div class="w-full text-center">
-          <a href="#">
+          <button type="button" (click)="imageInput.click()">
             <app-icon
               [iconName]="'crop_original'"
               [extraClass]="'pc-uploading-icon'"
@@ -32,10 +30,16 @@
               [extraClass]="'pc-default-icon'"
             ></app-icon>
             {{ 'change_profile_image' | translate }}
-          </a>
-          <form>
-            <input type="file" accept="image/jpeg,image/gif,image/png" name="pc-profile-file-input-profile-photo"
-              id="pc-profile-file-input-profile-photo" class="pc-profile-upload-file" />
+          </button>
+          <form [formGroup]="userImageForm">
+            <input
+              type="file"
+              accept="image/jpeg,image/gif,image/png"
+              name="pc-profile-image"
+              class="pc-profile-upload-file"
+              #imageInput
+              (change)="onFileChange($event)"
+            />
           </form>
         </div>
       </div>
@@ -95,12 +99,16 @@
           <div class="w-full text-right">
             <button type="submit" class="mb-3 pc-option-btn pc-option-green-btn">
               <app-icon
+                *ngIf="!update.data"
                 [iconName]="'save'"
                 [extraClass]="'pc-load-icon'"
+                [@iconAnimation]="update.data ? 'hidden' : 'visible'"
               ></app-icon>
               <app-icon
+                *ngIf="update.data"
                 [iconName]="'autorenew'"
                 [extraClass]="'pc-load-more-icon'"
+                [@iconAnimation]="update.data ? 'rotating' : 'hidden'"
               ></app-icon>
               {{ 'save_changes' | translate }}
             </button>
@@ -118,12 +126,12 @@
         <div class="flex">
           <div class="w-full">
             <ul class="pc-options">
-              <app-field-text [placeholder]="'new_password' | translate" [control]="passwordControl">
+              <app-field-password [placeholder]="'new_password' | translate" [control]="passwordControl">
                 {{ 'password' | translate }}
-              </app-field-text>
-              <app-field-text [placeholder]="'enter_password_again' | translate" [control]="repeatPasswordControl">
+              </app-field-password>
+              <app-field-password [placeholder]="'enter_password_again' | translate" [control]="repeatPasswordControl">
                 {{ 'repeat_password' | translate }}
-              </app-field-text>
+              </app-field-password>
             </ul>
           </div>
         </div>
@@ -131,12 +139,16 @@
           <div class="w-full text-right">
             <button type="submit" class="mb-3 pc-option-btn pc-option-green-btn">
               <app-icon
+                *ngIf="!update.password"
                 [iconName]="'save'"
                 [extraClass]="'pc-load-icon'"
+                [@iconAnimation]="update.password ? 'hidden' : 'visible'"
               ></app-icon>
               <app-icon
+                *ngIf="update.password"
                 [iconName]="'autorenew'"
                 [extraClass]="'pc-load-more-icon'"
+                [@iconAnimation]="update.password ? 'rotating' : 'hidden'"
               ></app-icon>
               {{ 'save_changes' | translate }}
             </button>
@@ -158,15 +170,17 @@
             <div class="pc-events-date-navigator pc-transparent-color">
               <div class="flex">
                 <div class="flex-none">
-                  <button type="button" class="pc-events-date-previous-date" onClick={prevDate}>
+                  <button type="button" class="pc-events-date-previous-date">
                     <app-icon [iconName]="'chevron_left'"></app-icon>
                   </button>
                 </div>
                 <div class="grow h-14 text-center">
-                  <h4>ss</h4>
+                  <h4>
+                    {{ events.date }} {{ monthText(events.month + 1) }} {{ events.year }}
+                  </h4>
                 </div>
                 <div class="flex-none">
-                  <button type="button" class="pc-events-date-next-date" onClick={nextDate}>
+                  <button type="button" class="pc-events-date-next-date">
                     <app-icon [iconName]="'chevron_right'"></app-icon>
                   </button>
                 </div>
@@ -174,19 +188,26 @@
             </div>
             <div class="pc-events-calendar flex justify-between pc-transparent-color" data-expand="false">
               <app-icon [iconName]="'calendar_month'"></app-icon>
-              <button type="button" class="pc-events-calendar-open" onClick={calendarButtonClick}>
+              <button type="button" class="pc-events-calendar-open">
                 <app-icon
                   [iconName]="'expand_more'"
                   [extraClass]="'pc-dropdown-arrow-down-icon'"
                 ></app-icon>
               </button>
-              <div class="pc-events-calendar-container" ref={calendarBtn}>
+              <div class="pc-events-calendar-container">
               </div>
             </div>
           </div>
           <div class="pc-events-body flex">
             <div class="pc-events-list">
-
+              <div class="justify-start items-start p-3 pc-event pc-event-new-member flex">
+                <div class="pc-event-text">
+                    <h4>
+                        <a href="#">New Test</a> has upgraded its plan.
+                    </h4>
+                    <h6>unknown</h6>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -194,3 +215,10 @@
     </div>
   </div>
 </div>
+<ng-template #noImage>
+  <div class="pc-profile-photo-cover">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+      <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+    </svg>
+  </div>
+</ng-template>

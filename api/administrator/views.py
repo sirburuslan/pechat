@@ -21,12 +21,13 @@ from rest_framework.response import Response
 
 # App Utils
 from administrator.filters import UsersFilter
-from administrator.serializers import CreateUserSerializer, UpdateUserSerializer, UpdateUserPasswordSerializer, UsersListSerializer
+from administrator.serializers import CreateUserSerializer, UpdateUserSerializer, UpdateUserImageSerializer, UpdateUserPasswordSerializer, UsersListSerializer
 from authentication.models import CustomUser
 from shared_utils.decorators import require_POST, require_PUT, require_DELETE
 from shared_utils.pagination import DefaultPagination
 from shared_utils.permissions import IsAdministrator
 from shared_utils.serializers import ListQuerySerializer
+from shared_utils.services import Imgur
 
 @method_decorator(require_POST, name='dispatch')
 class CreateUserView(CreateAPIView):
@@ -175,6 +176,89 @@ class UpdateUserView(UpdateAPIView):
             {
                 "success": True,
                 "message": _('The member was updated successfully.')
+            },
+            status=status.HTTP_200_OK
+        )
+    
+@method_decorator(require_PUT, name='dispatch')
+class UpdateUserImageView(UpdateAPIView):
+    """
+    This class updates a user image
+    from the administrator panel
+    """
+
+    # Serializer class used for user image update
+    serializer_class = UpdateUserImageSerializer
+
+    # Queryset is none
+    queryset = CustomUser.objects.all()
+
+    # Access Only With Tokken
+    authentication_classes = [TokenAuthentication]
+
+    # Permission classes
+    permission_classes = [IsAdministrator]
+
+    @method_decorator(sensitive_post_parameters())
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+
+        image = request.FILES.get('image')
+        print(image)
+
+        return Response(
+            {
+                "success": True,
+                "message": _('The image was saved successfully.')
+            },
+            status=status.HTTP_200_OK
+        )
+
+        # Get the user id
+        pk = kwargs.get('pk')
+
+        # Get the user
+        userObj = CustomUser.objects.get(pk=pk)
+
+        # Serialize data
+        serializer = self.get_serializer(data=request.data, instance=userObj)
+
+        # Check if data is valid
+        if not serializer.is_valid():
+            
+            # Default error message
+            error_msg = _('An error has occurred.')
+
+            # Check if the error is related to a field's value
+            if 'image' in serializer.errors:
+                error_msg = serializer.errors['image'][0].capitalize()
+
+            # Return custom message
+            return Response(
+                {
+                    "success": False,
+                    "message": error_msg
+                },
+                status=status.HTTP_200_OK
+            )
+
+        try:
+            serializer.save()
+        except Exception as e:
+            return Response(
+                {
+                    "success": False,
+                    "message": str(e)
+                },
+                status=status.HTTP_200_OK
+            )
+
+        return Response(
+            {
+                "success": True,
+                "message": _('The image was saved successfully.')
             },
             status=status.HTTP_200_OK
         )
@@ -348,7 +432,8 @@ class UserInfoView(RetrieveAPIView):
                         "first_name": user_data.first_name,
                         "last_name": user_data.last_name,
                         "role": user_data.role,
-                        "email": user_data.email
+                        "email": user_data.email,
+                        "image": user_data.image
                     }
                 },
                 status=status.HTTP_200_OK

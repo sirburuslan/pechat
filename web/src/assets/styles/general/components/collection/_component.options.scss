@@ -337,15 +337,20 @@
   background-color: $color-blue-light;
   color: $color-black-light-extra;
 
-  * {
+  & > * {
+    display: inline-block;
     vertical-align: middle;
     margin-top: -2px;
     margin-right: 2px;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
     font-size: 24px;
 
-    &.pc-load-more-icon {
-      display: none;
+    * {
+      font-size: 24px;
     }
+
   }
 
   &.pc-option-green-btn {
@@ -374,13 +379,8 @@
   }
 
   &.pc-option-active-btn {
-    .pc-load-icon {
-      display: none;
-    }
-
     .pc-load-more-icon {
       display: inline-block;
-      animation: 2s pc-rotate-icon-animation-next infinite linear;
     }
   }
 }

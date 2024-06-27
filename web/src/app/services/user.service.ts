@@ -61,8 +61,8 @@ export class UserService {
       environment.apiUrl + `api/v1.0/auth/registration`,
       {
         email: credentials.email,
-        password: credentials.password,
-      },
+        password: credentials.password
+      }
     );
   }
 
@@ -70,7 +70,7 @@ export class UserService {
     // Try to save the user
     return this.httpClient.post<ApiResponse<null>>(
       environment.apiUrl + `api/v1.0/admin/users/create`,
-      user,
+      user
     );
   }
 
@@ -78,7 +78,15 @@ export class UserService {
     // Try to save the user
     return this.httpClient.put<ApiResponse<null>>(
       environment.apiUrl + `api/v1.0/admin/users/${id}/update`,
-      user,
+      user
+    );
+  }
+
+  updateUserImage(formData: FormData, id: number): Observable<ApiResponse<null>> {
+    // Try to save the user image
+    return this.httpClient.put<ApiResponse<null>>(
+      environment.apiUrl + `api/v1.0/admin/users/${id}/update-image`,
+      formData
     );
   }
 
@@ -86,7 +94,7 @@ export class UserService {
     // Try to update the user's password
     return this.httpClient.put<ApiResponse<null>>(
       environment.apiUrl + `api/v1.0/admin/users/${id}/update-password`,
-      user,
+      user
     );
   }
 
@@ -106,7 +114,7 @@ export class UserService {
         catchError((error: HttpErrorResponse) => {
           console.error(error.message);
           return of(false);
-        }),
+        })
       );
   }
 

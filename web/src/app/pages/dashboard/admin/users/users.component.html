@@ -41,19 +41,9 @@
           <div class="pc-dashboard-sidebar-body flex justify-between">
             <div class="flex">
               <div class="grid grid-cols-1 content-around pc-user-photo">
-                <!--{(user.profilePhoto as string)?(
-                <Image src={user.profilePhoto} width={40} height={40} alt="User Photo" onError={(e:
-                  SyntheticEvent<HTMLImageElement, Event>): void => {e.currentTarget.src = '/assets/img/cover.png'}} />
-                  ): (
-                  <div class="pc-profile-photo-cover">
-                    {getIcon('IconPerson')}
-                  </div>
-                  )}-->
-                  <div class="pc-profile-photo-cover">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-                    </svg>
-                  </div>
+                <ng-container *ngIf="user.image; else noImage">
+                  <img [src]="user.image" alt="Member Image">
+                </ng-container>
               </div>
               <div class="grid grid-cols-1 content-around pc-user-info">
                 <h3>
@@ -245,5 +235,12 @@
     <div class="pc-no-users-found">
       <p>{{ 'no_results_found' | translate }}</p>
     </div>
+  </div>
+</ng-template>
+<ng-template #noImage>
+  <div class="pc-profile-photo-cover">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+    </svg>
   </div>
 </ng-template>

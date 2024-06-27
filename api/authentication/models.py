@@ -45,6 +45,9 @@ class CustomUser(AbstractUser):
         (1, 'Minimized'),
     )    
     sidebar = models.IntegerField(_('sidebar'), choices=SIDEBAR_CHOICES, default=0)
+    image = models.URLField(blank=True, null=True)
+    phone = models.CharField(max_length=20, blank=True, null=True)
+    language = models.CharField(max_length=10, blank=True, null=True)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
     objects = CustomUserManager()

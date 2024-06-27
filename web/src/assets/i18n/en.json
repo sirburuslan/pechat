@@ -335,5 +335,7 @@
   "phone_number_too_long": "The phone number should have maximum 50 characters.",
   "role_incorrect_value": "The role value has incorrect value.",
   "password_incorrect_length": "The password should have between 8 and 20 characters.",
-  "repeat_password_doesnt_match": "Repeat password doesn't match new password."
+  "repeat_password_doesnt_match": "Repeat password doesn't match new password.",
+  "upload_image_unsupported_file_type": "The uploaded image has unsupported file type.",
+  "upload_image_too_big": "The uploaded image should have maximum 1 mb."
 }

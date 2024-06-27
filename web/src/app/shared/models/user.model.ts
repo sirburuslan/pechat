@@ -26,4 +26,5 @@ export interface User extends CreateUser {
   date_joined: string;
   token: string;
   sidebar: boolean;
+  image: string;
 }

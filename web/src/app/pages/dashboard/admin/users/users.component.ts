@@ -218,9 +218,6 @@ export class UsersComponent implements OnInit, OnDestroy {
   onSubmit(event: Event) {
     event.preventDefault();
 
-    // Enable the animation
-    this.isSubmitting = true;
-
     // Reset error messages
     this.errors.firstName = '';
     this.errors.lastName = '';
@@ -235,6 +232,10 @@ export class UsersComponent implements OnInit, OnDestroy {
 
     // Verify if the received user data is valid
     if (this.newUserForm.valid) {
+
+      // Enable the animation
+      this.isSubmitting = true;
+
       // Create a new user
       const newUserObservable = this.usersService.createUser({
         first_name: firstName?.value,
