@@ -8,12 +8,13 @@
 This file contains classes for handling and generating responses for the administrator area
 """
 
-# Installed Utils
+# System Utils
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.debug import sensitive_post_parameters
 
 # Installed Utils
+from PIL import Image
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.generics import CreateAPIView, UpdateAPIView, ListAPIView, RetrieveAPIView, DestroyAPIView
@@ -21,7 +22,7 @@ from rest_framework.response import Response
 
 # App Utils
 from administrator.filters import UsersFilter
-from administrator.serializers import CreateUserSerializer, UpdateUserSerializer, UpdateUserImageSerializer, UpdateUserPasswordSerializer, UsersListSerializer
+from administrator.serializers import CreateUserSerializer, UpdateUserSerializer, UpdateUserPasswordSerializer, UsersListSerializer
 from authentication.models import CustomUser
 from shared_utils.decorators import require_POST, require_PUT, require_DELETE
 from shared_utils.pagination import DefaultPagination
@@ -180,15 +181,30 @@ class UpdateUserView(UpdateAPIView):
             status=status.HTTP_200_OK
         )
     
-@method_decorator(require_PUT, name='dispatch')
+def validate_image_format(image):
+    allowed_extensions = ['jpg', 'jpeg', 'png']
+    allowed_mime_types = ['image/jpeg', 'image/png']
+
+    # Check file extension
+    file_extension = image.name.split('.')[-1].lower()
+    if file_extension not in allowed_extensions:
+        return False
+
+    # Check MIME type
+    mime_type = image.content_type.lower()
+    if mime_type not in allowed_mime_types:
+        return False
+
+    return True
+    
 class UpdateUserImageView(UpdateAPIView):
     """
     This class updates a user image
     from the administrator panel
     """
 
-    # Serializer class used for user image update
-    serializer_class = UpdateUserImageSerializer
+    # No serializer used
+    serializer_class = None
 
     # Queryset is none
     queryset = CustomUser.objects.all()
@@ -199,54 +215,64 @@ class UpdateUserImageView(UpdateAPIView):
     # Permission classes
     permission_classes = [IsAdministrator]
 
-    @method_decorator(sensitive_post_parameters())
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
-
     def put(self, request, *args, **kwargs):
-
-        image = request.FILES.get('image')
-        print(image)
-
-        return Response(
-            {
-                "success": True,
-                "message": _('The image was saved successfully.')
-            },
-            status=status.HTTP_200_OK
-        )
-
-        # Get the user id
-        pk = kwargs.get('pk')
-
-        # Get the user
-        userObj = CustomUser.objects.get(pk=pk)
-
-        # Serialize data
-        serializer = self.get_serializer(data=request.data, instance=userObj)
-
-        # Check if data is valid
-        if not serializer.is_valid():
-            
-            # Default error message
-            error_msg = _('An error has occurred.')
-
-            # Check if the error is related to a field's value
-            if 'image' in serializer.errors:
-                error_msg = serializer.errors['image'][0].capitalize()
-
-            # Return custom message
-            return Response(
-                {
-                    "success": False,
-                    "message": error_msg
-                },
-                status=status.HTTP_200_OK
-            )
-
+        """
+        Upload image on Imgur
+        And update the user's image
+        """
         try:
-            serializer.save()
+
+            # Get the image
+            image = request.FILES.get('image')
+
+            # Validate file type
+            if not validate_image_format(image):
+                return Response(
+                    {
+                        "success": False,
+                        "message": "Invalid image format. Only JPG and PNG allowed."
+                    },
+                    status=status.HTTP_200_OK
+                )
+
+            # Upload image to Imgur
+            response = Imgur().upload(image=image)
+
+            if response['success']:
+
+                # Get the user id
+                pk = kwargs.get('pk')
+
+                # Get the user
+                userObj = CustomUser.objects.get(pk=pk)
+
+                # Add image to the user object
+                userObj.image = response['data']['link']
+
+                # Update the image
+                userObj.save()
+
+                return Response(
+                    {
+                        "success": True,
+                        "message": _('The image was saved successfully.')
+                    },
+                    status=status.HTTP_200_OK
+                )
+            
+            else:
+                # There was an error
+                return Response(
+                    {
+                        "success": False,
+                        "message": response['error']
+                    },
+                    status=status.HTTP_200_OK
+                )
+
         except Exception as e:
+            print("Error")
+            print(e)
             return Response(
                 {
                     "success": False,
@@ -254,14 +280,6 @@ class UpdateUserImageView(UpdateAPIView):
                 },
                 status=status.HTTP_200_OK
             )
-
-        return Response(
-            {
-                "success": True,
-                "message": _('The image was saved successfully.')
-            },
-            status=status.HTTP_200_OK
-        )
     
 @method_decorator(require_PUT, name='dispatch')
 class UpdateUserPasswordView(UpdateAPIView):

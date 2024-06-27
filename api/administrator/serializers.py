@@ -114,17 +114,6 @@ class UpdateUserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Invalid role choice.")
         return value
     
-class UpdateUserImageSerializer(serializers.ModelSerializer):
-    """
-    The goal of this class
-    is to validate the user's image
-    """
-    image = serializers.URLField()
-
-    class Meta:
-        model = CustomUser
-        fields = ['image']
-    
 class UpdateUserPasswordSerializer(serializers.ModelSerializer):
     """
     The goal of this class
