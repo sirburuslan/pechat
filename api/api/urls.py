@@ -24,6 +24,6 @@ from settings.settings_views import SettingsView
 urlpatterns = [
     path('api/v1.0/settings', SettingsView.as_view(), name='settings'),
     path('api/v1.0/member/', include(('member.urls', 'member'), namespace='member')),
-    path('api/v1.0/auth/', include(('authentication.urls', 'authentication'), namespace='authentication')),
+    path('api/auth/', include(('authentication.urls', 'authentication'), namespace='authentication')),
     path('api/v1.0/admin/', include(('administrator.urls', 'administrator'), namespace='administrator')),
 ]

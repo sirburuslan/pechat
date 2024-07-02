@@ -186,17 +186,7 @@
                 </div>
               </div>
             </div>
-            <div class="pc-events-calendar flex justify-between pc-transparent-color" data-expand="false">
-              <app-icon [iconName]="'calendar_month'"></app-icon>
-              <button type="button" class="pc-events-calendar-open">
-                <app-icon
-                  [iconName]="'expand_more'"
-                  [extraClass]="'pc-dropdown-arrow-down-icon'"
-                ></app-icon>
-              </button>
-              <div class="pc-events-calendar-container">
-              </div>
-            </div>
+            <app-calendar (callbackValue)="clickDate($event)"></app-calendar>
           </div>
           <div class="pc-events-body flex">
             <div class="pc-events-list">

@@ -12,7 +12,7 @@ class Imgur():
         Uploads images on Imgur
         """
         # Set the Imgur's Client ID
-        authorization_header = f"Client-ID {Client ID}"
+        authorization_header = f"Client-ID "
 
         try:
 

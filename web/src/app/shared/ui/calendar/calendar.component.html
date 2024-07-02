@@ -1,0 +1,73 @@
+<div class="pc-events-calendar flex justify-between pc-transparent-color" [attr.data-expand]="dropdownStatus">
+  <app-icon [iconName]="'calendar_month'"></app-icon>
+  <button type="button" class="pc-events-calendar-open" (click)="toggleDropdown(($event))">
+    <app-icon [iconName]="'expand_more'" [extraClass]="'pc-dropdown-arrow-down-icon'"></app-icon>
+  </button>
+  <div class="pc-events-calendar-container">
+    <div class="pc-calendar">
+      <table>
+        <thead>
+          <tr>
+            <th>
+              <button type="button" class="pc-calendar-date-previous-btn" (click)="previousMonth()">
+                <app-icon [iconName]="'chevron_left'"></app-icon>
+              </button>
+            </th>
+            <th class="pc-calendar-year-month">
+              {{ monthText(events.month) }} {{ events.year }}
+            </th>
+            <th>
+              <button type="button" class="pc-calendar-date-next-btn" (click)="nextMonth()">
+                <app-icon [iconName]="'chevron_right'"></app-icon>
+              </button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colSpan="3">
+              <table>
+                <thead>
+                  <tr>
+                    <td>
+                      {{ 'day_m' | translate }}
+                    </td>
+                    <td>
+                      {{ 'day_tu' | translate }}
+                    </td>
+                    <td>
+                      {{ 'day_w' | translate }}
+                    </td>
+                    <td>
+                      {{ 'day_th' | translate }}
+                    </td>
+                    <td>
+                      {{ 'day_f' | translate }}
+                    </td>
+                    <td>
+                      {{ 'day_sa' | translate }}
+                    </td>
+                    <td>
+                      {{ 'day_su' | translate }}
+                    </td>
+                  </tr>
+                </thead>
+                <tbody *ngIf="calendarDates && calendarDates.length > 0" class="pc-calendar-dates">
+                  <tr *ngFor="let dates of calendarDates">
+                    <ng-container *ngIf="dates && dates.length > 0">
+                      <td *ngFor="let date of dates">
+                        <a href="#" *ngIf="!date.empty" [ngClass]="{'pc-calendar-selected-date': date.selected}" (click)="callback($event, date.date)">
+                          {{ date.text }}
+                        </a>
+                      </td>
+                    </ng-container>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

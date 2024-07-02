@@ -44,6 +44,7 @@ import { FieldEmailComponent } from '../../../../../shared/ui/fields/general/fie
 import { FieldPasswordComponent } from '../../../../../shared/ui/fields/general/field-password/field-password.component';
 import { FieldSelectComponent } from '../../../../../shared/ui/fields/general/field-select/field-select.component';
 import { NotificationsDirective } from '../../../../../shared/directives/notifications.directive';
+import { CalendarComponent } from '../../../../../shared/ui/calendar/calendar.component';
 import { ImageValidator } from '../../../../../shared/validators/ImageValidator';
 
 // Configuration
@@ -59,6 +60,7 @@ import { ImageValidator } from '../../../../../shared/validators/ImageValidator'
     FieldEmailComponent,
     FieldPasswordComponent,
     FieldSelectComponent,
+    CalendarComponent
   ],
   templateUrl: './user.component.html',
   animations: [
@@ -519,6 +521,10 @@ export class UserComponent implements OnInit, OnDestroy {
 
   monthText(month: number): string {
     return this.utilsService.monthText(month);
+  }
+
+  clickDate(date: string): void {
+    
   }
 
 }

@@ -35,6 +35,7 @@ export class DropdownComponent {
   // Sent Data
   @Output() callbackValue = new EventEmitter<number | string>();
 
+  // Dropdown Status
   dropdownStatus = 'false';
 
   // Inject Services
